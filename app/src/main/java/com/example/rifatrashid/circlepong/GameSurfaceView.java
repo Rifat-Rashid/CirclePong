@@ -22,8 +22,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public static Context contextApplication;
     public static Handler handlerApplication;
     private SurfaceHolder surfaceHolderApplication;
-    private boolean startDrawing = false;
-    private boolean isCounting = true;
+    private boolean startDrawing = true;
+    private boolean isCounting = false;
     private static int degree = 30;
     private static long counterTime = 0;
     private final Paint mainHeaderTextPaint = new Paint();
@@ -76,6 +76,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         });
         thread.setRunning(true);
         thread.start();
+        //Currently being unused due to trouble with the countdown...(attempt fixing later)
         if (isCounting) {
             try {
                 new CountDownTimer(4000, 1000) {
@@ -268,11 +269,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     Arena.Draw(canvas);
                     canvas.drawColor(Color.parseColor("#1abc9c"));
                     canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
-                }
-                canvas.drawColor(Color.parseColor("#1abc9c"));
-                canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
-                if(!startDrawing) {
-                    canvas.drawText(String.valueOf((counterTime / 1000)), Arena.getX(), Arena.getY(), counterTextPaint);
                 }
                 canvas.restore();
             }
