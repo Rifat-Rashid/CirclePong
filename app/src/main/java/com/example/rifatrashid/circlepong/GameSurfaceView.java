@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -19,8 +21,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public static Context contextApplication;
     public static Handler handlerApplication;
-    private SurfaceHolder surfaceHolder;
+    private SurfaceHolder surfaceHolderApplication;
+    private boolean startDrawing = false;
+    private boolean isCounting = true;
     private static int degree = 30;
+    private static long counterTime = 0;
     private final Paint mainHeaderTextPaint = new Paint();
     private final Paint counterTextPaint = new Paint();
     private static final int paddleSpeed = 2;
@@ -37,8 +42,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public GameSurfaceView(Context context) {
         super(context);
-        surfaceHolder = getHolder();
-        surfaceHolder.addCallback(this);
+        surfaceHolderApplication = getHolder();
+        surfaceHolderApplication.addCallback(this);
         mainHeaderTextPaint.setColor(Color.WHITE);
         mainHeaderTextPaint.setTextSize(130);
         counterTextPaint.setColor(Color.WHITE);
@@ -51,9 +56,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Canvas canvas = surfaceHolder.lockCanvas();
-        surfaceHolder.unlockCanvasAndPost(canvas);
-        thread = new GameThread(surfaceHolder, getContext(), new Handler() {
+        Canvas canvas = surfaceHolderApplication.lockCanvas();
+        surfaceHolderApplication.unlockCanvasAndPost(canvas);
+        thread = new GameThread(surfaceHolderApplication, getContext(), new Handler() {
             @Override
             public void close() {
 
@@ -71,6 +76,24 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         });
         thread.setRunning(true);
         thread.start();
+        if (isCounting) {
+            try {
+                new CountDownTimer(4000, 1000) {
+                    public void onTick(long timeUntilFinished) {
+                        counterTime = timeUntilFinished;
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        //Stop the counter, start drawing objects on Canvas!
+                        isCounting = false;
+                        startDrawing = true;
+                    }
+                }.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -107,17 +130,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private int canvasWidth = 600;
         private int canvasHeight = 600;
         private boolean run = false;
-        private boolean startDrawing = false;
-        private boolean isCounting = true;
 
         public GameThread(SurfaceHolder surfaceHolder, Context context, Handler handler) {
-            surfaceHolder = surfaceHolder;
+            surfaceHolderApplication = surfaceHolder;
             handlerApplication = handler;
             contextApplication = context;
         }
 
         public void doStart() {
-            synchronized (surfaceHolder) {
+            synchronized (surfaceHolderApplication) {
                 gamePaddle = new paddle(200, 400, 900, 1100, degree, 30);
                 Arena = new arena(550, 750, 350);
                 ball = new Ball(Arena.getX(), Arena.getY(), 30);
@@ -128,13 +149,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             while (run) {
                 Canvas c = null;
                 try {
-                    c = surfaceHolder.lockCanvas(null);
-                    synchronized (surfaceHolder) {
+                    c = surfaceHolderApplication.lockCanvas(null);
+                    synchronized (surfaceHolderApplication) {
                         doDraw(c);
                     }
                 } finally {
                     if (c != null) {
-                        surfaceHolder.unlockCanvasAndPost(c);
+                        surfaceHolderApplication.unlockCanvasAndPost(c);
                     }
                 }
             }
@@ -155,7 +176,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
         public void setSurfaceSize(int width, int height) {
-            synchronized (surfaceHolder) {
+            synchronized (surfaceHolderApplication) {
                 canvasWidth = width;
                 canvasHeight = height;
                 doStart();
@@ -194,24 +215,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
-                if (isCounting) {
-                    try {
-                        new CountDownTimer(4000, 1000) {
-                            public void onTick(long timeUntilFinished) {
-                                canvas.drawText(String.valueOf((timeUntilFinished / 1000)), Arena.getX(), Arena.getY(), counterTextPaint);
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                //Stop the counter, start drawing objects on Canvas!
-                                isCounting = false;
-                                startDrawing = true;
-                            }
-                        }.start();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                //Edited
                 if (startDrawing) {
                     int distanceFromCenter = getDistanceFromCenter();
                     if (distanceFromCenter >= (Arena.getRadius() - ball.getRadius()) && distanceFromCenter <= ((Arena.getRadius() - ball.getRadius()) + 2)) {
@@ -259,11 +263,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         degree = 360 + degree;
                     }
                     gamePaddle.setDegree(degree);
-                    canvas.drawColor(Color.parseColor("#1abc9c"));
+                    ball.Draw(canvas);
                     gamePaddle.Draw(canvas);
                     Arena.Draw(canvas);
-                    ball.Draw(canvas);
+                    canvas.drawColor(Color.parseColor("#1abc9c"));
                     canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
+                }
+                canvas.drawColor(Color.parseColor("#1abc9c"));
+                canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
+                if(!startDrawing) {
+                    canvas.drawText(String.valueOf((counterTime / 1000)), Arena.getX(), Arena.getY(), counterTextPaint);
                 }
                 canvas.restore();
             }
