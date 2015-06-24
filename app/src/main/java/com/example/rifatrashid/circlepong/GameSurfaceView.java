@@ -8,8 +8,6 @@ import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -22,12 +20,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public static Context contextApplication;
     public static Handler handlerApplication;
     private SurfaceHolder surfaceHolderApplication;
+    //Variable to keep track of the number of times the user touches the screen
+    private int numberOfScreenTaps = 0;
     private boolean startDrawing = true;
     private boolean isCounting = false;
     private static int degree = 30;
-    private static long counterTime = 0;
     private final Paint mainHeaderTextPaint = new Paint();
     private final Paint counterTextPaint = new Paint();
+    private final Paint subHeaderText = new Paint();
     private static final int paddleSpeed = 2;
     private static int counter = 0;
     private static final int BALL_SPEED = 2;
@@ -37,6 +37,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int deltaX, deltaY = 0;
     private int shift = 1;
     private int hit = 0;
+    private boolean moveBall = false;
     private GameThread thread;
 
 
@@ -48,6 +49,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mainHeaderTextPaint.setTextSize(130);
         counterTextPaint.setColor(Color.WHITE);
         counterTextPaint.setTextSize(130);
+        subHeaderText.setColor(Color.WHITE);
+        subHeaderText.setTextSize(80);
     }
 
     public GameThread getThread() {
@@ -81,7 +84,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             try {
                 new CountDownTimer(4000, 1000) {
                     public void onTick(long timeUntilFinished) {
-                        counterTime = timeUntilFinished;
+                        //unused code, uncommenting causes an error, fix later...
+                        //counterTime = timeUntilFinished;
                     }
 
                     @Override
@@ -229,14 +233,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     }
                     switch (counter) {
                         case 0:
-                            degree += paddleSpeed;
+                            canvas.drawText("Tap to steady paddle", Arena.getX(), Arena.getY() + Arena.getRadius() + 25, subHeaderText);
                             break;
                         case 1:
-                            degree -= paddleSpeed;
+                            canvas.drawText("Tap to start", Arena.getX(), Arena.getY() + Arena.getRadius() + 25, subHeaderText);
+                            degree += paddleSpeed;
                             break;
                         case 2:
+                            degree -= paddleSpeed;
+                        case 3:
                             //Reset counter!
-                            counter = 0;
+                            counter = 1;
                             degree += paddleSpeed;
                             break;
                     }
@@ -252,8 +259,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             shift = BALL_SPEED;
                             break;
                     }
-                    deltaX += shift;
-                    deltaY += shift;
+                    if(counter == 2){
+                        moveBall = true;
+                    }
+                    if(moveBall) {
+                        deltaX += shift;
+                        deltaY += shift;
+                    }else{
+                        deltaX = 0;
+                        deltaY = 0;
+                    }
                     ball.setX(Arena.getX() + deltaX);
                     ball.setY(Arena.getY() + deltaY);
                     //fix paddle angle calculations
