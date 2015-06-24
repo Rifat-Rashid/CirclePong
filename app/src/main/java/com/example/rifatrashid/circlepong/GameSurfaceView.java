@@ -1,6 +1,7 @@
 package com.example.rifatrashid.circlepong;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -16,10 +17,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private SurfaceHolder surfaceHolder;
 
     public GameSurfaceView(Context context){
-
+        super(context);
+        surfaceHolder = getHolder();
+        surfaceHolder.addCallback(this);
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Canvas canvas = surfaceHolder.lockCanvas();
+        surfaceHolder.unlockCanvasAndPost(canvas);
 
     }
 
