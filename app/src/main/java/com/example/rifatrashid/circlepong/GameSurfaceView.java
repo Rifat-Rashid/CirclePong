@@ -2,6 +2,7 @@ package com.example.rifatrashid.circlepong;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -14,7 +15,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public static Context context;
     public static Handler handler;
-    private SurfaceHolder surfaceHolder;
+    private SurfaceHolder surfaceHolder;private static int degree = 30;
+    private final Paint mainHeaderTextPaint = new Paint();
+    private static final int paddleSpeed = 2;
+    private static int counter = 0;
+    private static final int BALL_SPEED = 2;
+    private paddle gamePaddle;
+    private arena Arena;
+    private Ball ball;
+    private int deltaX, deltaY = 0;
+    private int shift = 1;
+    private int hit = 0;
+
 
     public GameSurfaceView(Context context){
         super(context);
