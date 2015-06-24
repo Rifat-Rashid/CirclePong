@@ -1,6 +1,7 @@
 package com.example.rifatrashid.circlepong;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,7 +30,8 @@ public class MainActivity extends Activity {
         singleplayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(MainActivity.this, initializeGame.class);
+                startActivity(i);
             }
         });
 

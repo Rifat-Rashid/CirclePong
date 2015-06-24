@@ -17,7 +17,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public static Context contextApplication;
     public static Handler handlerApplication;
-    private SurfaceHolder surfaceHolder;private static int degree = 30;
+    private SurfaceHolder surfaceHolder;
+    private static int degree = 30;
     private final Paint mainHeaderTextPaint = new Paint();
     private static final int paddleSpeed = 2;
     private static int counter = 0;
@@ -30,13 +31,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int hit = 0;
 
 
-    public GameSurfaceView(Context context){
+    public GameSurfaceView(Context context) {
         super(context);
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
         mainHeaderTextPaint.setColor(Color.WHITE);
         mainHeaderTextPaint.setTextSize(130);
     }
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Canvas canvas = surfaceHolder.lockCanvas();

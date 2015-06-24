@@ -46,23 +46,23 @@ public class paddle {
         this.degree = degree;
     }
 
-    public int getDegree(){
+    public int getDegree() {
         return this.degree;
     }
 
-    public int getArcLength(){
+    public int getArcLength() {
         return this.arcLength;
     }
 
-    public int getMaxDegree(){
-        if(degree >= 360){
+    public int getMaxDegree() {
+        if (degree >= 360) {
             degree = degree - 360;
         }
         return degree + getArcLength();
     }
 
-    public int getMinDegree(){
-        if(degree >= 360){
+    public int getMinDegree() {
+        if (degree >= 360) {
             degree = degree - 360;
         }
         return degree;
