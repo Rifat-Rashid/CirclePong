@@ -4,11 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by Reefer on 6/24/15.
@@ -20,6 +22,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private SurfaceHolder surfaceHolder;
     private static int degree = 30;
     private final Paint mainHeaderTextPaint = new Paint();
+    private final Paint counterTextPaint = new Paint();
     private static final int paddleSpeed = 2;
     private static int counter = 0;
     private static final int BALL_SPEED = 2;
@@ -29,6 +32,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int deltaX, deltaY = 0;
     private int shift = 1;
     private int hit = 0;
+    private GameThread thread;
 
 
     public GameSurfaceView(Context context) {
@@ -37,23 +41,55 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         surfaceHolder.addCallback(this);
         mainHeaderTextPaint.setColor(Color.WHITE);
         mainHeaderTextPaint.setTextSize(130);
+        counterTextPaint.setColor(Color.WHITE);
+        counterTextPaint.setTextSize(130);
+    }
+
+    public GameThread getThread() {
+        return thread;
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Canvas canvas = surfaceHolder.lockCanvas();
         surfaceHolder.unlockCanvasAndPost(canvas);
+        thread = new GameThread(surfaceHolder, getContext(), new Handler() {
+            @Override
+            public void close() {
 
+            }
+
+            @Override
+            public void flush() {
+
+            }
+
+            @Override
+            public void publish(LogRecord record) {
+
+            }
+        });
+        thread.setRunning(true);
+        thread.start();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+        thread.setSurfaceSize(width, height);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        boolean retry = true;
+        thread.setRunning(false);
+        while (retry) {
+            try {
+                thread.join();
+                retry = false;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -71,6 +107,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private int canvasWidth = 600;
         private int canvasHeight = 600;
         private boolean run = false;
+        private boolean startDrawing = false;
+        private boolean isCounting = true;
 
         public GameThread(SurfaceHolder surfaceHolder, Context context, Handler handler) {
             surfaceHolder = surfaceHolder;
@@ -104,6 +142,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         public void setRunning(boolean b) {
             run = b;
+        }
+
+        //Set startDrawing!
+        public void setStartDrawing(boolean b) {
+            startDrawing = b;
+        }
+
+        //Set wether timer is counting down or not!
+        public void setIsCounting(boolean b) {
+            isCounting = b;
         }
 
         public void setSurfaceSize(int width, int height) {
@@ -143,60 +191,78 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         int ballAngle;
 
-        private void doDraw(Canvas canvas) {
+        private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
-                int distanceFromCenter = getDistanceFromCenter();
-                if (distanceFromCenter >= (Arena.getRadius() - ball.getRadius()) && distanceFromCenter <= ((Arena.getRadius() - ball.getRadius()) + 2)) {
-                    ballAngle = (360 - getBallAngle());
-                    if (ballAngle >= gamePaddle.getMinDegree() && ballAngle <= gamePaddle.getMaxDegree()) {
-                        hit++;
-                    } else {
-                        //Do nothing, ball missed paddle
+                if (isCounting) {
+                    try {
+                        new CountDownTimer(4000, 1000) {
+                            public void onTick(long timeUntilFinished) {
+                                canvas.drawText(String.valueOf((timeUntilFinished / 1000)), Arena.getX(), Arena.getY(), counterTextPaint);
+                            }
+
+                            @Override
+                            public void onFinish() {
+
+                            }
+                        }.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-                switch (counter) {
-                    case 0:
-                        degree += paddleSpeed;
-                        break;
-                    case 1:
-                        degree -= paddleSpeed;
-                        break;
-                    case 2:
-                        //Reset counter!
-                        counter = 0;
-                        degree += paddleSpeed;
-                        break;
+                if (startDrawing) {
+                    int distanceFromCenter = getDistanceFromCenter();
+                    if (distanceFromCenter >= (Arena.getRadius() - ball.getRadius()) && distanceFromCenter <= ((Arena.getRadius() - ball.getRadius()) + 2)) {
+                        ballAngle = (360 - getBallAngle());
+                        if (ballAngle >= gamePaddle.getMinDegree() && ballAngle <= gamePaddle.getMaxDegree()) {
+                            hit++;
+                        } else {
+                            //Do nothing, ball missed paddle
+                        }
+                    }
+                    switch (counter) {
+                        case 0:
+                            degree += paddleSpeed;
+                            break;
+                        case 1:
+                            degree -= paddleSpeed;
+                            break;
+                        case 2:
+                            //Reset counter!
+                            counter = 0;
+                            degree += paddleSpeed;
+                            break;
+                    }
+                    switch (hit) {
+                        case 0:
+                            shift = BALL_SPEED;
+                            break;
+                        case 1:
+                            shift = -BALL_SPEED;
+                            break;
+                        case 2:
+                            hit = 0;
+                            shift = BALL_SPEED;
+                            break;
+                    }
+                    deltaX += shift;
+                    deltaY += shift;
+                    ball.setX(Arena.getX() + deltaX);
+                    ball.setY(Arena.getY() + deltaY);
+                    //fix paddle angle calculations
+                    if (degree > 360) {
+                        degree = degree - 360;
+                    }
+                    if (degree < 360) {
+                        degree = 360 + degree;
+                    }
+                    gamePaddle.setDegree(degree);
+                    canvas.drawColor(Color.parseColor("#1abc9c"));
+                    gamePaddle.Draw(canvas);
+                    Arena.Draw(canvas);
+                    ball.Draw(canvas);
+                    canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
                 }
-                switch (hit) {
-                    case 0:
-                        shift = BALL_SPEED;
-                        break;
-                    case 1:
-                        shift = -BALL_SPEED;
-                        break;
-                    case 2:
-                        hit = 0;
-                        shift = BALL_SPEED;
-                        break;
-                }
-                deltaX += shift;
-                deltaY += shift;
-                ball.setX(Arena.getX() + deltaX);
-                ball.setY(Arena.getY() + deltaY);
-                //fix paddle angle calculations
-                if (degree > 360) {
-                    degree = degree - 360;
-                }
-                if (degree < 360) {
-                    degree = 360 + degree;
-                }
-                gamePaddle.setDegree(degree);
-                canvas.drawColor(Color.parseColor("#1abc9c"));
-                gamePaddle.Draw(canvas);
-                Arena.Draw(canvas);
-                ball.Draw(canvas);
-                canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
                 canvas.restore();
             }
         }
