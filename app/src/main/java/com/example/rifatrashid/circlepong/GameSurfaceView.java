@@ -284,10 +284,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
                     switch (numberOfScreenTaps) {
                         case 0:
-                            canvas.drawText("Tap to steady paddle", Arena.getX() - 70, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
+                            canvas.drawText("Tap to steady paddle", Arena.getX() - 250, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
                             break;
                         case 1:
-                            canvas.drawText("Tap to start", Arena.getX() - 70, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
+                            canvas.drawText("Tap to start", Arena.getX() - 130, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
                             break;
                         case 2:
                             moveBall = true;
