@@ -203,7 +203,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                             @Override
                             public void onFinish() {
-
+                                //Stop the counter, start drawing objects on Canvas!
+                                isCounting = false;
+                                startDrawing = true;
                             }
                         }.start();
                     } catch (Exception e) {
