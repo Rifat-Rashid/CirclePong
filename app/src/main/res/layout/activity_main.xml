@@ -33,7 +33,7 @@
         android:paddingTop="5dip" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/singleplayer_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button"
@@ -43,31 +43,31 @@
         android:text="SINGLE PLAYER"
         android:layout_marginTop="87dp"
         android:layout_below="@+id/line"
-        android:layout_alignStart="@+id/button3" />
+        android:layout_alignStart="@+id/leaderboards_btn" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/settings_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button"
         android:width="175dp"
         android:height="75dp"
         android:textColor="#FFFFFF"
-        android:text="LEADERBOARDS"
+        android:text="SETTINGS"
         android:layout_marginTop="35dp"
-        android:layout_below="@+id/button3"
-        android:layout_alignStart="@+id/button3" />
+        android:layout_below="@+id/leaderboards_btn"
+        android:layout_alignStart="@+id/leaderboards_btn" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/leaderboards_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button"
         android:width="175dp"
         android:height="75dp"
-        android:text="MULTIPLAYER"
+        android:text="LEADERBOARDS"
         android:textColor="#FFFFFF"
         android:layout_marginTop="39dp"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/singleplayer_btn"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
