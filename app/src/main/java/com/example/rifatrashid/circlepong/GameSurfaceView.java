@@ -24,7 +24,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int numberOfScreenTaps = 0;
     private boolean startDrawing = true;
     private boolean isCounting = false;
-    private static int degree = 30;
+    private static int degree = 75;
     private final Paint mainHeaderTextPaint = new Paint();
     private final Paint counterTextPaint = new Paint();
     private final Paint subHeaderText = new Paint();
@@ -50,7 +50,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         counterTextPaint.setColor(Color.WHITE);
         counterTextPaint.setTextSize(130);
         subHeaderText.setColor(Color.WHITE);
-        subHeaderText.setTextSize(80);
+        subHeaderText.setTextSize(55);
     }
 
     public GameThread getThread() {
@@ -125,6 +125,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 counter++;
+                numberOfScreenTaps++;
                 break;
         }
         return false;
@@ -233,14 +234,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     }
                     switch (counter) {
                         case 0:
-                            canvas.drawText("Tap to steady paddle", Arena.getX(), Arena.getY() + Arena.getRadius() + 25, subHeaderText);
                             break;
                         case 1:
-                            canvas.drawText("Tap to start", Arena.getX(), Arena.getY() + Arena.getRadius() + 25, subHeaderText);
                             degree += paddleSpeed;
                             break;
                         case 2:
                             degree -= paddleSpeed;
+                             break;
                         case 3:
                             //Reset counter!
                             counter = 1;
@@ -259,13 +259,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             shift = BALL_SPEED;
                             break;
                     }
-                    if(counter == 2){
-                        moveBall = true;
-                    }
                     if(moveBall) {
                         deltaX += shift;
                         deltaY += shift;
-                    }else{
+                    }
+                    if(!moveBall){
                         deltaX = 0;
                         deltaY = 0;
                     }
@@ -278,12 +276,23 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     if (degree < 360) {
                         degree = 360 + degree;
                     }
+                    canvas.drawColor(Color.parseColor("#1abc9c"));
                     gamePaddle.setDegree(degree);
                     ball.Draw(canvas);
                     gamePaddle.Draw(canvas);
                     Arena.Draw(canvas);
-                    canvas.drawColor(Color.parseColor("#1abc9c"));
                     canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
+                    switch (numberOfScreenTaps) {
+                        case 0:
+                            canvas.drawText("Tap to steady paddle", Arena.getX() - 70, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
+                            break;
+                        case 1:
+                            canvas.drawText("Tap to start", Arena.getX() - 70, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
+                            break;
+                        case 2:
+                            moveBall = true;
+                            break;
+                    }
                 }
                 canvas.restore();
             }
