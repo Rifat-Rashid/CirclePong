@@ -50,7 +50,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         counterTextPaint.setColor(Color.WHITE);
         counterTextPaint.setTextSize(130);
         subHeaderText.setColor(Color.WHITE);
-        subHeaderText.setTextSize(55);
+        subHeaderText.setTextSize(65);
     }
 
     public GameThread getThread() {
@@ -143,10 +143,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             contextApplication = context;
         }
 
+        //750
         public void doStart() {
             synchronized (surfaceHolderApplication) {
-                gamePaddle = new paddle(200, 400, 900, 1100, degree, 30);
-                Arena = new arena(550, 750, 350);
+                gamePaddle = new paddle(200, 500, 900, 1200, degree, 30);
+                Arena = new arena(550, 850, 350);
                 ball = new Ball(Arena.getX(), Arena.getY(), 30);
             }
         }
@@ -281,13 +282,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     ball.Draw(canvas);
                     gamePaddle.Draw(canvas);
                     Arena.Draw(canvas);
-                    canvas.drawText("Circle Pong", 235, 150, mainHeaderTextPaint);
+                    canvas.drawText("Circle Pong", 235, 350, mainHeaderTextPaint);
                     switch (numberOfScreenTaps) {
                         case 0:
-                            canvas.drawText("Tap to steady paddle", Arena.getX() - 250, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
+                            canvas.drawText("Tap to steady paddle", Arena.getX() - 275, Arena.getY() + Arena.getRadius() + 150, subHeaderText);
                             break;
                         case 1:
-                            canvas.drawText("Tap to start", Arena.getX() - 130, Arena.getY() + Arena.getRadius() + 75, subHeaderText);
+                            canvas.drawText("Tap to start", Arena.getX() - 150, Arena.getY() + Arena.getRadius() + 150, subHeaderText);
                             break;
                         case 2:
                             moveBall = true;

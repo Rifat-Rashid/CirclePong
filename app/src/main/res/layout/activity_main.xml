@@ -53,6 +53,7 @@
         android:width="175dp"
         android:height="75dp"
         android:textColor="#FFFFFF"
+        android:elevation="5dp"
         android:text="SETTINGS"
         android:layout_marginTop="35dp"
         android:layout_below="@+id/leaderboards_btn"
