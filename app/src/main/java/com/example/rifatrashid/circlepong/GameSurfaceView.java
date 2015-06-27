@@ -28,9 +28,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private final Paint mainHeaderTextPaint = new Paint();
     private final Paint counterTextPaint = new Paint();
     private final Paint subHeaderText = new Paint();
-    private static final int paddleSpeed = 2;
+    private static final int paddleSpeed = 4;
     private static int counter = 0;
-    private static final int BALL_SPEED = 2;
+    private static final int BALL_SPEED = 5;
     private paddle gamePaddle;
     private arena Arena;
     private Ball ball;
@@ -282,7 +282,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     ball.Draw(canvas);
                     gamePaddle.Draw(canvas);
                     Arena.Draw(canvas);
-                    canvas.drawText("Circle Pong", 235, 350, mainHeaderTextPaint);
+                    canvas.drawText("Circle Pong", 235, 200, mainHeaderTextPaint);
                     switch (numberOfScreenTaps) {
                         case 0:
                             canvas.drawText("Tap to steady paddle", Arena.getX() - 275, Arena.getY() + Arena.getRadius() + 150, subHeaderText);
