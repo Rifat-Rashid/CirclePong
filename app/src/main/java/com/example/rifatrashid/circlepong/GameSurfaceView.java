@@ -30,7 +30,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private final Paint subHeaderText = new Paint();
     private static final int paddleSpeed = 4;
     private static int counter = 0;
-    private static final int BALL_SPEED = 5;
+    private static final int BALL_SPEED  = 5;
     private paddle gamePaddle;
     private arena Arena;
     private Ball ball;
