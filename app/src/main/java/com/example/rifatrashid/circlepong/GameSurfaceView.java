@@ -28,7 +28,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private final Paint mainHeaderTextPaint = new Paint();
     private final Paint counterTextPaint = new Paint();
     private final Paint subHeaderText = new Paint();
-    private static final int paddleSpeed = 4;
+    private static final int paddleSpeed = 3;
     private static int counter = 0;
     private static final int BALL_SPEED  = 5;
     private paddle gamePaddle;
@@ -225,7 +225,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 //Edited
                 if (startDrawing) {
                     int distanceFromCenter = getDistanceFromCenter();
-                    if (distanceFromCenter >= (Arena.getRadius() - ball.getRadius()) && distanceFromCenter <= ((Arena.getRadius() - ball.getRadius()) + 2)) {
+                    if (distanceFromCenter >= (Arena.getRadius() - ball.getRadius()) && distanceFromCenter <= ((Arena.getRadius() - ball.getRadius()) + 4)) {
                         ballAngle = (360 - getBallAngle());
                         if (ballAngle >= gamePaddle.getMinDegree() && ballAngle <= gamePaddle.getMaxDegree()) {
                             hit++;

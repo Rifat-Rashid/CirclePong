@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1abc9c"
+    android:background="#00796B"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
@@ -13,62 +13,21 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
         android:text="Circle Pong"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40dp"
         android:textColor="#FFFFFF"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp" />
 
-    <TextView
-        android:id="@+id/line"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/titleText"
-        android:background="#FFFFFF"
-        android:gravity="center_horizontal"
-        android:paddingTop="5dip" />
 
-    <Button
-        android:id="@+id/singleplayer_btn"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_button"
-        android:width="175dp"
-        android:height="75dp"
-        android:textColor="#FFFFFF"
-        android:text="SINGLE PLAYER"
-        android:layout_marginTop="87dp"
-        android:layout_below="@+id/line"
-        android:layout_alignStart="@+id/leaderboards_btn" />
-
-    <Button
-        android:id="@+id/settings_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_button"
-        android:width="175dp"
-        android:height="75dp"
-        android:textColor="#FFFFFF"
-        android:elevation="5dp"
-        android:text="SETTINGS"
-        android:layout_marginTop="35dp"
-        android:layout_below="@+id/leaderboards_btn"
-        android:layout_alignStart="@+id/leaderboards_btn" />
-
-    <Button
-        android:id="@+id/leaderboards_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_button"
-        android:width="175dp"
-        android:height="75dp"
-        android:text="LEADERBOARDS"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="39dp"
-        android:layout_below="@+id/singleplayer_btn"
+        android:id="@+id/imageView"
+        android:src="@drawable/yeh"
+        android:scaleType="centerInside"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
