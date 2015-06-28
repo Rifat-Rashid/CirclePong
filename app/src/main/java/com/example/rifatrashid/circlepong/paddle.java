@@ -16,7 +16,7 @@ public class paddle {
 
     public paddle(int x, int y, int width, int height, int degree, int arcLength) {
         this.x = x;
-        this.y = y;
+        this.y =  y;
         this.width = width;
         this.height = height;
         this.degree = degree;
