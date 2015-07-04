@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
     private Ball ball;
     private ImageView imageView;
     private Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +33,26 @@ public class MainActivity extends Activity {
         myPaint.setStyle(Paint.Style.STROKE);
         myPaint.setStrokeWidth(2);
         myPaint.setColor(Color.parseColor("#FF2D55"));
+        ballPaint.setAntiAlias(true);
+        ballPaint.setStyle(Paint.Style.FILL);
+        ballPaint.setColor(Color.parseColor("#FFFFFF"));
         Arena = new arena(60, 60, 50);
         Arena.setPaint(myPaint);
         ball = new Ball(Arena.getX(), Arena.getY(), 5);
-        Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
-        Canvas canvas = new Canvas(tempBitmap);
-        canvas.drawColor(Color.parseColor("#191919"));
-        canvas.drawCircle(60, 60, 50, myPaint);
-
-        imageView.setImageBitmap(tempBitmap);
+        ball.setPaint(ballPaint);
+        //Create custom bitmap to draw on!
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //Draw to bitmap!
+                Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
+                Canvas canvas = new Canvas(tempBitmap);
+                canvas.drawColor(Color.parseColor("#191919"));
+                Arena.Draw(canvas);
+                ball.Draw(canvas);
+                imageView.setImageBitmap(tempBitmap);
+            }
+        }).start();
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
