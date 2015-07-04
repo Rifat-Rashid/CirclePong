@@ -20,9 +20,11 @@ public class MainActivity extends Activity {
     private TextView titleText;
     private arena Arena;
     private Ball ball;
+    private paddle Paddle;
     private ImageView imageView;
     private Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Bitmap bitmap, tempBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +42,18 @@ public class MainActivity extends Activity {
         Arena.setPaint(myPaint);
         ball = new Ball(Arena.getX(), Arena.getY(), 5);
         ball.setPaint(ballPaint);
+        //tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
         //Create custom bitmap to draw on!
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //Draw to bitmap!
-                Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
+                tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
                 Canvas canvas = new Canvas(tempBitmap);
                 canvas.drawColor(Color.parseColor("#191919"));
                 Arena.Draw(canvas);
                 ball.Draw(canvas);
-                imageView.setImageBitmap(tempBitmap);
+                imageView.setImageBitmap(bitmap);
             }
         }).start();
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
