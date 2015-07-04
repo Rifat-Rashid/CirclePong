@@ -40,7 +40,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private boolean moveBall = false;
     private GameThread thread;
 
-
     public GameSurfaceView(Context context) {
         super(context);
         surfaceHolderApplication = getHolder();
