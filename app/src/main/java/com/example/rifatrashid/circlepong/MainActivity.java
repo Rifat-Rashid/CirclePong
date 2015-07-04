@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
         Arena.setPaint(myPaint);
         ball = new Ball(Arena.getX(), Arena.getY(), 5);
         ball.setPaint(ballPaint);
-        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, 0, 360);
+        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, 25, 30);
         Paddle.setStroke(3);
         //Create custom bitmap to draw on!
         new Thread(new Runnable() {
