@@ -49,4 +49,8 @@ public class arena {
     public int getRadius() {
         return this.radius;
     }
+
+    public void setPaint(Paint paint){
+        this.paint = paint;
+    }
 }

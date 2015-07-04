@@ -44,4 +44,8 @@ public class Ball {
     public int getRadius() {
         return this.radius;
     }
+
+    public void setPaint(Paint paint){
+        this.paint = paint;
+    }
 }

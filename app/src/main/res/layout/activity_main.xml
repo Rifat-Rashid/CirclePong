@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,19 +19,24 @@
         android:textColor="#FFFFFF"
         android:layout_marginTop="40dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_x="79dp"
+        android:layout_y="57dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play >"
+        android:text="Play"
         android:width="185dp"
         android:height="65dp"
         android:id="@+id/playButton"
         android:background="@drawable/custom_button"
         android:layout_marginBottom="111dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+        android:layout_x="90dp"
+        android:layout_y="400dp" />
 
     <ImageView
         android:layout_width="230dp"
@@ -39,6 +44,37 @@
         android:id="@+id/imageView"
         android:layout_below="@+id/titleText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp" />
+        android:layout_marginTop="44dp"
+        android:layout_x="68dp"
+        android:layout_y="129dp" />
 
-</RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Achievments"
+        android:id="@+id/button"
+        android:width="145dp"
+        android:height="65dp"
+        android:background="@drawable/custom_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="39dp"
+        android:layout_x="18dp"
+        android:layout_y="483dp"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leaderboards"
+        android:id="@+id/button2"
+        android:width="145dp"
+        android:height="65dp"
+        android:background="@drawable/custom_button"
+        android:layout_alignTop="@+id/button"
+        android:layout_alignParentEnd="true"
+        android:layout_x="198dp"
+        android:layout_y="483dp"
+        android:textColor="#FFFFFF" />
+
+</AbsoluteLayout>
