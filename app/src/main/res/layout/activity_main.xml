@@ -77,4 +77,11 @@
         android:layout_y="483dp"
         android:textColor="#FFFFFF" />
 
+    <SurfaceView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/surfaceView"
+        android:layout_x="134dp"
+        android:layout_y="183dp" />
+
 </AbsoluteLayout>
