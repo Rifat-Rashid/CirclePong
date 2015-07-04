@@ -42,18 +42,19 @@ public class MainActivity extends Activity {
         Arena.setPaint(myPaint);
         ball = new Ball(Arena.getX(), Arena.getY(), 5);
         ball.setPaint(ballPaint);
-        //tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
+        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2, Arena.getRadius() * 2, 0, 90);
         //Create custom bitmap to draw on!
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //Draw to bitmap!
-                tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
+                Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
                 Canvas canvas = new Canvas(tempBitmap);
                 canvas.drawColor(Color.parseColor("#191919"));
                 Arena.Draw(canvas);
                 ball.Draw(canvas);
-                imageView.setImageBitmap(bitmap);
+                Paddle.Draw(canvas);
+                imageView.setImageBitmap(tempBitmap);
             }
         }).start();
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
