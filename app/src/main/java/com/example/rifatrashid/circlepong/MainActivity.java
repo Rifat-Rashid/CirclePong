@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(tempBitmap);
                 canvas.drawColor(Color.parseColor("#191919"));
-                Arena.Draw(canvas);
+                Arena.Draw(canvas);s
                 ball.Draw(canvas);
                 Paddle.Draw(canvas);
                 imageView.setImageBitmap(tempBitmap);
