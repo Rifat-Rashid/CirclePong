@@ -33,19 +33,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = (ImageView) findViewById(R.id.imageView);
-        myPaint.setAntiAlias(true);
-        myPaint.setStyle(Paint.Style.STROKE);
-        myPaint.setStrokeWidth(2);
-        myPaint.setColor(Color.parseColor("#FF2D55"));
-        ballPaint.setAntiAlias(true);
-        ballPaint.setStyle(Paint.Style.FILL);
-        ballPaint.setColor(Color.parseColor("#FFFFFF"));
-        Arena = new arena(60, 60, 50);
-        Arena.setPaint(myPaint);
-        ball = new Ball(Arena.getX(), Arena.getY(), 5);
-        ball.setPaint(ballPaint);
-        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, ADDITIONAL_PADDLEARC, 30);
-        Paddle.setStroke(3);
+        setupCanvas();
         //Create custom bitmap to draw on!
         new Thread(new Runnable() {
             @Override
@@ -63,6 +51,21 @@ public class MainActivity extends Activity {
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
+    }
 
+    private void setupCanvas(){
+        myPaint.setAntiAlias(true);
+        myPaint.setStyle(Paint.Style.STROKE);
+        myPaint.setStrokeWidth(2);
+        myPaint.setColor(Color.parseColor("#FF2D55"));
+        ballPaint.setAntiAlias(true);
+        ballPaint.setStyle(Paint.Style.FILL);
+        ballPaint.setColor(Color.parseColor("#FFFFFF"));
+        Arena = new arena(60, 60, 50);
+        Arena.setPaint(myPaint);
+        ball = new Ball(Arena.getX(), Arena.getY(), 5);
+        ball.setPaint(ballPaint);
+        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, ADDITIONAL_PADDLEARC, 30);
+        Paddle.setStroke(3);
     }
 }
