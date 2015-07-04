@@ -75,4 +75,8 @@ public class paddle {
     public void setStroke(int stroke){
         this.paint.setStrokeWidth(stroke);
     }
+
+    public void setArcLength(int arcLength){
+        this.arcLength = arcLength;
+    }
 }

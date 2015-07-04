@@ -39,13 +39,16 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 //Draw to bitmap!
-                Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
-                Canvas canvas = new Canvas(tempBitmap);
-                canvas.drawColor(Color.parseColor("#191919"));
-                Arena.Draw(canvas);
-                ball.Draw(canvas);
-                Paddle.Draw(canvas);
-                imageView.setImageBitmap(tempBitmap);
+                for(int i = 0; i <= 360; i++) {
+                    Bitmap tempBitmap = Bitmap.createBitmap(120, 120, Bitmap.Config.RGB_565);
+                    Canvas canvas = new Canvas(tempBitmap);
+                    canvas.drawColor(Color.parseColor("#191919"));
+                    Arena.Draw(canvas);
+                    ball.Draw(canvas);
+                    Paddle.Draw(canvas);
+                    imageView.setImageBitmap(tempBitmap);
+                    Paddle.setArcLength(i);
+                }
             }
         }).start();
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
