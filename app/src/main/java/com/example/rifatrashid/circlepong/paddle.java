@@ -68,4 +68,11 @@ public class paddle {
         return degree;
     }
 
+    public void setPaint(Paint paint){
+        this.paint = paint;
+    }
+
+    public void setStroke(int stroke){
+        this.paint.setStrokeWidth(stroke);
+    }
 }

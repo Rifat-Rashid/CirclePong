@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
     private ImageView imageView;
     private Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final int ADDITIONAL_WIDTH = 10;
     private Bitmap bitmap, tempBitmap;
 
     @Override
@@ -42,7 +43,8 @@ public class MainActivity extends Activity {
         Arena.setPaint(myPaint);
         ball = new Ball(Arena.getX(), Arena.getY(), 5);
         ball.setPaint(ballPaint);
-        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2, Arena.getRadius() * 2, 0, 90);
+        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, 0, 360);
+        Paddle.setStroke(3);
         //Create custom bitmap to draw on!
         new Thread(new Runnable() {
             @Override
