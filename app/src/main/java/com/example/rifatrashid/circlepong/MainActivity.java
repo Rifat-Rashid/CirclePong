@@ -135,7 +135,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         public void doStart(){
             synchronized (_surfaceHolder){
                 //Initialize stuff here!
-                Arenaa = new arena(300, 300, 50);
+                Arenaa = new arena(300, 300, 285);
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setAntiAlias(true);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(2);
+                paint.setColor(Color.parseColor("#FF2D55"));
+                Arenaa.setPaint(paint);
             }
         }
 
@@ -169,7 +175,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
         private void doDraw(final Canvas canvas){
             canvas.save();
-            canvas.drawColor(Color.parseColor("#1abc9c"));
+            canvas.drawColor(Color.parseColor("#191919"));
             Arenaa.Draw(canvas);
             canvas.restore();
         }
