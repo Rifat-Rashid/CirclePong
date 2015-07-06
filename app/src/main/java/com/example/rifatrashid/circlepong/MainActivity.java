@@ -20,19 +20,11 @@ import java.util.logging.LogRecord;
 public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
     private TextView titleText;
-    private arena Arena;
     private Handler handlerApplication;
-    private Ball ball;
-    private ImageView imageView;
     private Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private Paint ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final int ADDITIONAL_WIDTH = 10;
-    private final int ADDITIONAL_PADDLEARC = 25;
-     private SurfaceHolder _surfaceHolder;
+    private SurfaceHolder _surfaceHolder;
     private GameThread thread;
     private SurfaceView _surfaceView;
-    private Bitmap bitmap, tempBitmap;
-    private arena Arenaa;
     private paddle Paddle;
 
     @Override
@@ -63,24 +55,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
     }
-
-    /*
-    private void setupCanvas() {
-        myPaint.setAntiAlias(true);
-        myPaint.setStyle(Paint.Style.STROKE);
-        myPaint.setStrokeWidth(2);
-        myPaint.setColor(Color.parseColor("#FF2D55"));
-        ballPaint.setAntiAlias(true);
-        ballPaint.setStyle(Paint.Style.FILL);
-        ballPaint.setColor(Color.parseColor("#FFFFFF"));
-        Arena = new arena(60, 60, 50);
-        Arena.setPaint(myPaint);
-        ball = new Ball(Arena.getX(), Arena.getY(), 5);
-        ball.setPaint(ballPaint);
-        Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, ADDITIONAL_PADDLEARC, 30);
-        Paddle.setStroke(3);
-    }
-    */
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -136,20 +110,14 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         public void doStart(){
             synchronized (_surfaceHolder){
                 //Initialize stuff here!
-                //Arenaa = new arena(300, 300, 285);
                 Paddle = new paddle(15,15 ,585, 585, 0, 360);
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(2);
                 paint.setColor(Color.parseColor("#FF2D55"));
-                myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                myPaint.setAntiAlias(true);
-                myPaint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(2);
                 myPaint.setColor(Color.parseColor("#FFFFFF"));
                 Paddle.setPaint(paint);
-                //Arenaa.setPaint(paint);
             }
         }
 
