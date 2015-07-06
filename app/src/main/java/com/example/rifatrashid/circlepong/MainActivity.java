@@ -22,13 +22,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
     private TextView titleText;
     private Handler handlerApplication;
-    private Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private SurfaceHolder _surfaceHolder;
     private GameThread thread;
     private SurfaceView _surfaceView;
     private paddle Paddle;
     private final int DEGREE_ARC_1 = 270;
     private int arc1Length = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +150,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             canvas.drawColor(Color.parseColor("#191919"));
             Paddle.Draw(canvas);
             if (arc1Length <= 360) {
-                arc1Length += 2;
+                arc1Length += 3;
                 Paddle.setArcLength(arc1Length);
             }
             canvas.restore();
