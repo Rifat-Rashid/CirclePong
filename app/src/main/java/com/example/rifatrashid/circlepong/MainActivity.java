@@ -1,17 +1,14 @@
 package com.example.rifatrashid.circlepong;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.logging.Handler;
@@ -32,6 +29,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     //Starting radius for baseCircle
     private int baseCircleRadius = 0;
     private Paint baseCirclePaint;
+    private boolean isDrawing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
-        Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
+        Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
     }
@@ -68,10 +66,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             @Override
             public void onTick(long millisUntilFinished) {
                 //Do Nothing!
+                _surfaceView.setBackgroundColor(Color.parseColor("#191919"));
             }
 
             @Override
             public void onFinish() {
+                _surfaceView.setBackgroundColor(Color.parseColor("#00000000"));
                 thread.setRunning(true);
                 thread.start();
             }
@@ -115,12 +115,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(4);
+                paint.setStrokeWidth(8);
                 paint.setColor(Color.parseColor("#FF2D55"));
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
-                baseCirclePaint.setColor(Color.parseColor("#2f2f2f"));
+                baseCirclePaint.setColor(Color.parseColor("#2a2a2a"));
                 Paddle.setPaint(paint);
                 baseCircle.setPaint(baseCirclePaint);
             }
@@ -155,21 +155,23 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         }
 
         private void doDraw(final Canvas canvas) {
-            canvas.save();
-            canvas.drawColor(Color.parseColor("#191919"));
-            Paddle.Draw(canvas);
-            baseCircle.Draw(canvas);
-            if (arc1Length <= 360) {
-                arc1Length += 3;
-                Paddle.setArcLength(arc1Length);
-            }
-            if(arc1Length >= 360){
-                if(baseCircleRadius <= 280){
-                    baseCircleRadius +=5;
-                    baseCircle.setRadius(baseCircleRadius);
+            if (run) {
+                canvas.save();
+                canvas.drawColor(Color.parseColor("#191919"));
+                baseCircle.Draw(canvas);
+                Paddle.Draw(canvas);
+                if (arc1Length <= 360) {
+                    arc1Length += 3;
+                    Paddle.setArcLength(arc1Length);
                 }
+                if (arc1Length >= 360) {
+                    if (baseCircleRadius <= 280) {
+                        baseCircleRadius += 5;
+                        baseCircle.setRadius(baseCircleRadius);
+                    }
+                }
+                canvas.restore();
             }
-            canvas.restore();
         }
     }
 }
