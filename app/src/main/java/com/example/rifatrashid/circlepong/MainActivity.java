@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     //Starting radius for baseCircle
     private int baseCircleRadius = 0;
     private Paint baseCirclePaint;
-    private boolean isDrawing = false;
+    private final int BASECIRCLE_GROWTH_RATE = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +166,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 }
                 if (arc1Length >= 360) {
                     if (baseCircleRadius <= 280) {
-                        baseCircleRadius += 5;
+                        baseCircleRadius += BASECIRCLE_GROWTH_RATE;
                         baseCircle.setRadius(baseCircleRadius);
                     }
                 }
