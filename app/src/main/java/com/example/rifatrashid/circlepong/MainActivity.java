@@ -9,13 +9,20 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.games.Games;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 
-public class MainActivity extends Activity implements SurfaceHolder.Callback {
+public class MainActivity extends Activity implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private TextView titleText;
     private Handler handlerApplication;
@@ -34,6 +41,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     private Ball ball;
     private final int BALL_GROWTH_RATE = 4;
     private Paint ballPaint;
+    private GoogleApiClient mGoogleApiClient;
+    private Button achievments_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,20 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Drive.API)
+                .addScope(Drive.SCOPE_FILE)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
+        achievments_button = (Button) findViewById(R.id.button);
+        achievments_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
+            }
+        });
     }
 
     @Override
@@ -65,7 +88,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
             }
         });
-        new CountDownTimer(1000, 1000) {
+        new CountDownTimer(300, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -99,6 +122,21 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     class GameThread extends Thread {
