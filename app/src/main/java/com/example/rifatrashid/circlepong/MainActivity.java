@@ -28,7 +28,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     private paddle Paddle;
     private final int DEGREE_ARC_1 = 270;
     private int arc1Length = 0;
-
+    private Circle baseCircle;
+    //Starting radius for baseCircle
+    private int baseCircleRadius = 0;
+    private Paint baseCirclePaint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,12 +111,18 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             synchronized (_surfaceHolder) {
                 //Initialize stuff here!
                 Paddle = new paddle(15, 15, 585, 585, DEGREE_ARC_1, arc1Length);
+                baseCircle = new Circle(300, 300, 285);
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(4);
                 paint.setColor(Color.parseColor("#FF2D55"));
+                baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                baseCirclePaint.setAntiAlias(true);
+                baseCirclePaint.setStyle(Paint.Style.FILL);
+                paint.setColor(Color.parseColor("#2f2f2f"));
                 Paddle.setPaint(paint);
+                baseCircle.setPaint(baseCirclePaint);
             }
         }
 
@@ -149,6 +158,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             canvas.save();
             canvas.drawColor(Color.parseColor("#191919"));
             Paddle.Draw(canvas);
+            baseCircle.Draw(canvas);
             if (arc1Length <= 360) {
                 arc1Length += 3;
                 Paddle.setArcLength(arc1Length);
