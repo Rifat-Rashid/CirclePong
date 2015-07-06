@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,7 +23,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     private arena Arena;
     private Handler handlerApplication;
     private Ball ball;
-    private paddle Paddle;
     private ImageView imageView;
     private Paint myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -33,6 +33,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     private SurfaceView _surfaceView;
     private Bitmap bitmap, tempBitmap;
     private arena Arenaa;
+    private paddle Paddle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
-
-        imageView = (ImageView) findViewById(R.id.imageView);
         //setupCanvas();
         /*
         //Create custom bitmap to draw on!
@@ -65,6 +64,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         titleText.setTypeface(lato);
     }
 
+    /*
     private void setupCanvas() {
         myPaint.setAntiAlias(true);
         myPaint.setStyle(Paint.Style.STROKE);
@@ -80,6 +80,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         Paddle = new paddle(Arena.getX() - Arena.getRadius(), Arena.getY() - Arena.getRadius(), Arena.getRadius() * 2 + ADDITIONAL_WIDTH, Arena.getRadius() * 2 + ADDITIONAL_WIDTH, ADDITIONAL_PADDLEARC, 30);
         Paddle.setStroke(3);
     }
+    */
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -135,13 +136,20 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         public void doStart(){
             synchronized (_surfaceHolder){
                 //Initialize stuff here!
-                Arenaa = new arena(300, 300, 285);
+                //Arenaa = new arena(300, 300, 285);
+                Paddle = new paddle(15,15 ,585, 585, 0, 360);
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(2);
                 paint.setColor(Color.parseColor("#FF2D55"));
-                Arenaa.setPaint(paint);
+                myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                myPaint.setAntiAlias(true);
+                myPaint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(2);
+                myPaint.setColor(Color.parseColor("#FFFFFF"));
+                Paddle.setPaint(paint);
+                //Arenaa.setPaint(paint);
             }
         }
 
@@ -176,7 +184,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
         private void doDraw(final Canvas canvas){
             canvas.save();
             canvas.drawColor(Color.parseColor("#191919"));
-            Arenaa.Draw(canvas);
+            //Arenaa.Draw(canvas);
+            Paddle.Draw(canvas);
             canvas.restore();
         }
     }
