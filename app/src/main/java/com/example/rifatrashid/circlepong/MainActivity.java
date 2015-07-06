@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
             }
         });
-        new CountDownTimer(1500, 1000){
+        new CountDownTimer(1500, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -111,7 +111,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             synchronized (_surfaceHolder) {
                 //Initialize stuff here!
                 Paddle = new paddle(15, 15, 585, 585, DEGREE_ARC_1, arc1Length);
-                baseCircle = new Circle(300, 300, 285);
+                baseCircle = new Circle(300, 300, baseCircleRadius);
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
@@ -120,7 +120,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
-                paint.setColor(Color.parseColor("#2f2f2f"));
+                baseCirclePaint.setColor(Color.parseColor("#2f2f2f"));
                 Paddle.setPaint(paint);
                 baseCircle.setPaint(baseCirclePaint);
             }
@@ -162,6 +162,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
             if (arc1Length <= 360) {
                 arc1Length += 3;
                 Paddle.setArcLength(arc1Length);
+            }
+            if(arc1Length >= 360){
+                if(baseCircleRadius <= 280){
+                    baseCircleRadius +=5;
+                    baseCircle.setRadius(baseCircleRadius);
+                }
             }
             canvas.restore();
         }

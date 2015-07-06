@@ -48,4 +48,8 @@ public class Circle {
     public void setPaint(Paint paint){
         this.paint = paint;
     }
+
+    public void setRadius(int radius){
+        this.radius = radius;
+    }
 }
