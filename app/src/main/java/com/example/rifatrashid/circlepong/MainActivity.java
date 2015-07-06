@@ -28,8 +28,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
     private Circle baseCircle;
     //Starting radius for baseCircle
     private int baseCircleRadius = 0;
+    private int ballRadius = 0;
     private Paint baseCirclePaint;
     private final int BASECIRCLE_GROWTH_RATE = 11;
+    private Ball ball;
+    private final int BALL_GROWTH_RATE = 4;
+    private Paint ballPaint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
 
             }
         });
-        new CountDownTimer(1500, 1000) {
+        new CountDownTimer(1000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -112,6 +116,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 //Initialize stuff here!
                 Paddle = new paddle(15, 15, 585, 585, DEGREE_ARC_1, arc1Length);
                 baseCircle = new Circle(300, 300, baseCircleRadius);
+                ball = new Ball(300, 300, ballRadius);
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
@@ -121,8 +126,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
                 baseCirclePaint.setColor(Color.parseColor("#2a2a2a"));
+                ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                ballPaint.setAntiAlias(true);
+                ballPaint.setStyle(Paint.Style.FILL);
+                ballPaint.setColor(Color.parseColor("#FFFFFF"));
                 Paddle.setPaint(paint);
                 baseCircle.setPaint(baseCirclePaint);
+                ball.setPaint(ballPaint);
             }
         }
 
@@ -160,6 +170,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                 canvas.drawColor(Color.parseColor("#191919"));
                 baseCircle.Draw(canvas);
                 Paddle.Draw(canvas);
+                ball.Draw(canvas);
                 if (arc1Length <= 360) {
                     arc1Length += 3;
                     Paddle.setArcLength(arc1Length);
@@ -168,6 +179,12 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback {
                     if (baseCircleRadius <= 280) {
                         baseCircleRadius += BASECIRCLE_GROWTH_RATE;
                         baseCircle.setRadius(baseCircleRadius);
+                    }
+                }
+                if(baseCircleRadius >= 255){
+                    if(ballRadius <= 22){
+                        ballRadius += BALL_GROWTH_RATE;
+                        ball.setRadius(ballRadius);
                     }
                 }
                 canvas.restore();
