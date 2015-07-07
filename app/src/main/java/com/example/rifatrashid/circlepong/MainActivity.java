@@ -1,6 +1,7 @@
 package com.example.rifatrashid.circlepong;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,9 +15,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -55,19 +58,32 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Drive.API)
-                .addScope(Drive.SCOPE_FILE)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
                 .build();
-        mGoogleApiClient.connect();
         achievments_button = (Button) findViewById(R.id.button);
         achievments_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
+                Intent intent = Games.Achievements.getAchievementsIntent(mGoogleApiClient);
+                startActivity(intent);
+                //startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -219,8 +235,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                         baseCircle.setRadius(baseCircleRadius);
                     }
                 }
-                if(baseCircleRadius >= 255){
-                    if(ballRadius <= 22){
+                if (baseCircleRadius >= 255) {
+                    if (ballRadius <= 22) {
                         ballRadius += BALL_GROWTH_RATE;
                         ball.setRadius(ballRadius);
                     }
