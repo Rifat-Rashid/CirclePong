@@ -15,11 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.plus.Plus;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -51,18 +48,18 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Games.API)
+                .addScope(Games.SCOPE_GAMES)
+                .build();
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(new Scope(Scopes.PROFILE))
-                .build();
         achievments_button = (Button) findViewById(R.id.button);
         achievments_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +139,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        System.out.println("Connected!");
     }
 
     @Override
@@ -152,7 +149,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        System.out.println("Connection failed!");
     }
 
     class GameThread extends Thread {
