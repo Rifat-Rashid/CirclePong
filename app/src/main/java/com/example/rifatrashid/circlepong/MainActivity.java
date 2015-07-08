@@ -2,6 +2,7 @@ package com.example.rifatrashid.circlepong;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,7 +17,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.plus.Plus;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -52,8 +55,21 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Games.API)
+                .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addScope(Games.SCOPE_GAMES)
                 .build();
+        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Drive.API)
+                .addApi(Plus.API)
+                .addScope(Drive.SCOPE_FILE)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
@@ -73,8 +89,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     protected void onStart() {
-        super.onStart();
         mGoogleApiClient.connect();
+        super.onStart();
     }
 
     @Override
@@ -149,7 +165,15 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        System.out.println("Connection failed!");
+        if(connectionResult.hasResolution()){
+            try{
+                connectionResult.startResolutionForResult(this, 1);
+            }catch (IntentSender.SendIntentException e){
+                e.printStackTrace();
+            }
+        }
+        mGoogleApiClient.connect();
+        System.out.println(connectionResult);
     }
 
     class GameThread extends Thread {
