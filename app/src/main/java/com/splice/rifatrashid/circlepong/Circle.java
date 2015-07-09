@@ -1,25 +1,24 @@
-package com.example.rifatrashid.circlepong;
+package com.splice.rifatrashid.circlepong;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
- * Created by Reefer on 6/14/15.
+ * Created by Reefer on 7/5/15.
  */
-public class arena {
+public class Circle {
     private int x, y, radius;
     private Paint paint;
 
-    public arena(int x, int y, int radius) {
+    public Circle(int x, int y, int radius) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.parseColor("#16a085"));
-        paint.setStrokeWidth(3.5f);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.parseColor("#ecf0f1"));
     }
 
     public void Draw(Canvas canvas) {
@@ -32,10 +31,6 @@ public class arena {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
     }
 
     public int getX() {
@@ -52,5 +47,9 @@ public class arena {
 
     public void setPaint(Paint paint){
         this.paint = paint;
+    }
+
+    public void setRadius(int radius){
+        this.radius = radius;
     }
 }

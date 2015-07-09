@@ -1,4 +1,4 @@
-package com.example.rifatrashid.circlepong;
+package com.splice.rifatrashid.circlepong;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
@@ -46,6 +45,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private Paint ballPaint;
     private GoogleApiClient mGoogleApiClient;
     private Button achievments_button;
+    private boolean mResolvingError = false;
+    private static final int REQUEST_RESOLVE_ERROR = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +63,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
         }
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Drive.API)
-                .addApi(Plus.API)
-                .addScope(Drive.SCOPE_FILE)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-        mGoogleApiClient.connect();
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
@@ -80,23 +73,25 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         achievments_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = Games.Achievements.getAchievementsIntent(mGoogleApiClient);
-                startActivity(intent);
-                //startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
+                //Start ahcievments activity!
+                //@Provided by google
+                startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
             }
         });
     }
 
     @Override
     protected void onStart() {
-        mGoogleApiClient.connect();
         super.onStart();
+        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        mGoogleApiClient.disconnect();
+        if(mGoogleApiClient.isConnected()){
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -160,20 +155,48 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        mGoogleApiClient.connect();
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        if(mResolvingError){
+            return;
+        }else if(connectionResult.hasResolution()){
+            try{
+                mResolvingError = true;
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+                //If theres an error try to connect again
+                mGoogleApiClient.connect();
+            }
+        }else{
+            mResolvingError = true;
+        }
+        /*
         if(connectionResult.hasResolution()){
             try{
                 connectionResult.startResolutionForResult(this, 1);
+                mGoogleApiClient.connect();
             }catch (IntentSender.SendIntentException e){
                 e.printStackTrace();
             }
         }
-        mGoogleApiClient.connect();
+        */
         System.out.println(connectionResult);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == REQUEST_RESOLVE_ERROR){
+            mResolvingError = false;
+            if(resultCode == RESULT_OK){
+                if(!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()){
+                    mGoogleApiClient.connect();
+                }
+            }
+        }
     }
 
     class GameThread extends Thread {

@@ -1,4 +1,4 @@
-package com.example.rifatrashid.circlepong;
+package com.splice.rifatrashid.circlepong;
 
 import android.content.Context;
 import android.graphics.Canvas;

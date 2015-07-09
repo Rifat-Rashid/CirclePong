@@ -1,4 +1,4 @@
-package com.example.rifatrashid.circlepong;
+package com.splice.rifatrashid.circlepong;
 
 /**
  * Created by Reefer on 7/2/15.

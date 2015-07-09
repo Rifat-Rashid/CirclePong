@@ -1,4 +1,4 @@
-package com.example.rifatrashid.circlepong;
+package com.splice.rifatrashid.circlepong;
 
 import android.app.Activity;
 import android.os.Bundle;

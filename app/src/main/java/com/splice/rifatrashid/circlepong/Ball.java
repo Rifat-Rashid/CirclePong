@@ -1,17 +1,17 @@
-package com.example.rifatrashid.circlepong;
+package com.splice.rifatrashid.circlepong;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
- * Created by Reefer on 7/5/15.
+ * Created by Reefer on 6/15/15.
  */
-public class Circle {
+public class Ball {
     private int x, y, radius;
     private Paint paint;
 
-    public Circle(int x, int y, int radius) {
+    public Ball(int x, int y, int radius) {
         this.x = x;
         this.y = y;
         this.radius = radius;

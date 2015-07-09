@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0 rc2"
 
     defaultConfig {
-        applicationId "com.example.rifatrashid.circlepong"
+        applicationId "com.splice.rifatrashid.circlepong"
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
