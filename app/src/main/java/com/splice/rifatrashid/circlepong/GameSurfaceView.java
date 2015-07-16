@@ -50,6 +50,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int rightArcSmall = 0;
     private int rightArcLength = 0;
     private int leftArcLength = 0;
+    private Paint baseCirclePaint;
+    private Circle baseCirlce;
+    private Ball fakeGameBall;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -161,8 +164,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 leftPaddle = new paddle(200, 500, 900, 1200, 270, 0);
                 leftPaddleSmall = new paddle(200, 500, 900, 1200, 90, 0);
                 rightPaddleSmall = new paddle(200, 500, 900, 1200, 90, 0);
+                baseCirlce = new Circle(550, 850, 350);
                 Arena = new arena(550, 850, 350);
                 ball = new Ball(Arena.getX(), Arena.getY(), 30);
+                //---------------------------------------------------------------------------------
+                //right paddle paint
                 rightPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 rightPaddlePaint.setAntiAlias(true);
                 rightPaddlePaint.setColor(Color.parseColor("#FF2D55"));
@@ -179,11 +185,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 //Paint for small paddles
                 smallPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 smallPaddlePaint.setAntiAlias(true);
-                smallPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                smallPaddlePaint.setColor(Color.parseColor("#FFFFFF"));
                 smallPaddlePaint.setStyle(Paint.Style.STROKE);
                 smallPaddlePaint.setStrokeWidth(12.0f);
                 leftPaddleSmall.setPaint(smallPaddlePaint);
                 rightPaddleSmall.setPaint(smallPaddlePaint);
+                //Paint for base circle
+                baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                baseCirclePaint.setAntiAlias(true);
+                baseCirclePaint.setStyle(Paint.Style.FILL);
+                baseCirclePaint.setColor(Color.parseColor("#2a2a2a"));
+                baseCirlce.setPaint(baseCirclePaint);
+                //---------------------------------------------------------------------------------
             }
         }
 
@@ -258,6 +271,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             if (run) {
                 canvas.save();
                 canvas.drawColor(Color.parseColor("#191819"));
+                baseCirlce.Draw(canvas);
                 rightPaddle.Draw(canvas);
                 leftPaddle.Draw(canvas);
                 leftPaddleSmall.Draw(canvas);
@@ -270,9 +284,22 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     leftArcLength -= 10;
                     leftPaddle.setArcLength(leftArcLength);
                 }
-                if(rightArcLength >= 180 && leftArcLength >=180){
 
+                if(rightArcLength >= 180){
+                    if(rightArcSmall >= -15){
+                        rightArcSmall -= 5;
+                    }
                 }
+
+                if(-leftArcLength >= 180){
+                    if(leftArcSmall <=15){
+                        leftArcSmall += 5;
+                        leftPaddleSmall.setArcLength(leftArcSmall);
+                    }
+                }
+
+                rightPaddleSmall.setArcLength(rightArcSmall);
+
                 //Edited
                 /*
                 if (startDrawing) {
