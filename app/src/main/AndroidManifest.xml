@@ -27,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".gameStartup"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.splice.rifatrashid.circlepong.initializeGame"
             android:label="CirclePong"

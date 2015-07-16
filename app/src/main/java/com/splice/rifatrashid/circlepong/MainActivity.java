@@ -47,6 +47,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private Button achievments_button;
     private boolean mResolvingError = false;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
+    private Button play_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
         }
+        play_btn = (Button) findViewById(R.id.playButton);
+        play_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent i = new Intent(MainActivity.this, gameStartup.class);
+                    startActivity(i);
+                }catch (Exception e){
+                    //Error occured with starting single player game variant!
+                    e.printStackTrace();
+                }
+            }
+        });
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);

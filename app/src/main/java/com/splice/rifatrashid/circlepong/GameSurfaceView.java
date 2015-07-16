@@ -39,6 +39,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int hit = 0;
     private boolean moveBall = false;
     private GameThread thread;
+    private paddle rightPaddle;
+    private paddle leftPaddle;
+    private Paint rightPaddlePaint;
+    private Paint leftPaddlePaint;
+    private paddle leftPaddleSmall;
+    private paddle rightPaddleSmall;
+    private Paint smallPaddlePaint;
+    private int leftArcSmall = 0;
+    private int rightArcSmall = 0;
+    private int rightArcLength = 0;
+    private int leftArcLength = 0;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -146,8 +157,33 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         public void doStart() {
             synchronized (surfaceHolderApplication) {
                 gamePaddle = new paddle(200, 500, 900, 1200, degree, 30);
+                rightPaddle = new paddle(200, 500, 900, 1200, 270, 0);
+                leftPaddle = new paddle(200, 500, 900, 1200, 270, 0);
+                leftPaddleSmall = new paddle(200, 500, 900, 1200, 90, 0);
+                rightPaddleSmall = new paddle(200, 500, 900, 1200, 90, 0);
                 Arena = new arena(550, 850, 350);
                 ball = new Ball(Arena.getX(), Arena.getY(), 30);
+                rightPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                rightPaddlePaint.setAntiAlias(true);
+                rightPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                rightPaddlePaint.setStyle(Paint.Style.STROKE);
+                rightPaddlePaint.setStrokeWidth(3.5f);
+                rightPaddle.setPaint(rightPaddlePaint);
+                //Paddle2
+                leftPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                leftPaddlePaint.setAntiAlias(true);
+                leftPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                leftPaddlePaint.setStyle(Paint.Style.STROKE);
+                leftPaddlePaint.setStrokeWidth(3.5f);
+                leftPaddle.setPaint(leftPaddlePaint);
+                //Paint for small paddles
+                smallPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                smallPaddlePaint.setAntiAlias(true);
+                smallPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                smallPaddlePaint.setStyle(Paint.Style.STROKE);
+                smallPaddlePaint.setStrokeWidth(12.0f);
+                leftPaddleSmall.setPaint(smallPaddlePaint);
+                rightPaddleSmall.setPaint(smallPaddlePaint);
             }
         }
 
@@ -221,7 +257,24 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
+                canvas.drawColor(Color.parseColor("#191819"));
+                rightPaddle.Draw(canvas);
+                leftPaddle.Draw(canvas);
+                leftPaddleSmall.Draw(canvas);
+                rightPaddleSmall.Draw(canvas);
+                if(rightArcLength <= 180){
+                    rightArcLength += 10;
+                    rightPaddle.setArcLength(rightArcLength);
+                }
+                if(leftArcLength <= 180){
+                    leftArcLength -= 10;
+                    leftPaddle.setArcLength(leftArcLength);
+                }
+                if(rightArcLength >= 180 && leftArcLength >=180){
+
+                }
                 //Edited
+                /*
                 if (startDrawing) {
                     int distanceFromCenter = getDistanceFromCenter();
                     if (distanceFromCenter >= (Arena.getRadius() - ball.getRadius()) && distanceFromCenter <= ((Arena.getRadius() - ball.getRadius()) + 4)) {
@@ -278,6 +331,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     }
                     canvas.drawColor(Color.parseColor("#1abc9c"));
                     gamePaddle.setDegree(degree);
+                    rightPaddle.Draw(canvas);
                     ball.Draw(canvas);
                     gamePaddle.Draw(canvas);
                     Arena.Draw(canvas);
@@ -294,6 +348,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                             break;
                     }
                 }
+                */
                 canvas.restore();
             }
         }
