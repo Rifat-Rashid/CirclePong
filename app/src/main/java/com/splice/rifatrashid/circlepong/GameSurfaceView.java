@@ -53,6 +53,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Paint baseCirclePaint;
     private Circle baseCirlce;
     private Ball fakeGameBall;
+    private Paint fakeBallPaint;
+    private int fakeGameBallRadius = 0;
+    private int ballRadius = 0;
+    private final int FAKE_BALL_GROWTH_RATE = 11;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -167,6 +171,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 baseCirlce = new Circle(550, 850, 350);
                 Arena = new arena(550, 850, 350);
                 ball = new Ball(Arena.getX(), Arena.getY(), 30);
+                fakeGameBall = new Ball(Arena.getX(), Arena.getY(), fakeGameBallRadius);
                 //---------------------------------------------------------------------------------
                 //right paddle paint
                 rightPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -196,6 +201,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 baseCirclePaint.setStyle(Paint.Style.FILL);
                 baseCirclePaint.setColor(Color.parseColor("#2a2a2a"));
                 baseCirlce.setPaint(baseCirclePaint);
+                //fake game ball paint
+                fakeBallPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                fakeBallPaint.setAntiAlias(true);
+                fakeBallPaint.setStyle(Paint.Style.FILL);
+                fakeBallPaint.setColor(Color.parseColor("#2a2a2a"));
+                fakeGameBall.setPaint(fakeBallPaint);
                 //---------------------------------------------------------------------------------
             }
         }
@@ -276,6 +287,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 leftPaddle.Draw(canvas);
                 leftPaddleSmall.Draw(canvas);
                 rightPaddleSmall.Draw(canvas);
+                fakeGameBall.Draw(canvas);
                 if(rightArcLength <= 180){
                     rightArcLength += 10;
                     rightPaddle.setArcLength(rightArcLength);
@@ -288,6 +300,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 if(rightArcLength >= 180){
                     if(rightArcSmall >= -15){
                         rightArcSmall -= 5;
+                        rightPaddleSmall.setArcLength(rightArcSmall);
                     }
                 }
 
@@ -295,10 +308,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     if(leftArcSmall <=15){
                         leftArcSmall += 5;
                         leftPaddleSmall.setArcLength(leftArcSmall);
+                        if(ballRadius <= 22){
+                            ballRadius += FAKE_BALL_GROWTH_RATE;
+                        }
                     }
                 }
-
-                rightPaddleSmall.setArcLength(rightArcSmall);
+                fakeGameBall.setRadius(ballRadius);
 
                 //Edited
                 /*
