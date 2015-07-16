@@ -190,7 +190,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 //Paint for small paddles
                 smallPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 smallPaddlePaint.setAntiAlias(true);
-                smallPaddlePaint.setColor(Color.parseColor("#FFFFFF"));
+                smallPaddlePaint.setColor(Color.parseColor("#FF2D55"));
                 smallPaddlePaint.setStyle(Paint.Style.STROKE);
                 smallPaddlePaint.setStrokeWidth(12.0f);
                 leftPaddleSmall.setPaint(smallPaddlePaint);
@@ -205,7 +205,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 fakeBallPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 fakeBallPaint.setAntiAlias(true);
                 fakeBallPaint.setStyle(Paint.Style.FILL);
-                fakeBallPaint.setColor(Color.parseColor("#2a2a2a"));
+                fakeBallPaint.setColor(Color.parseColor("#FFFFFF"));
                 fakeGameBall.setPaint(fakeBallPaint);
                 //---------------------------------------------------------------------------------
             }
