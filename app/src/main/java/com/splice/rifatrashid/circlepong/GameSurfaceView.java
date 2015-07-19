@@ -289,24 +289,24 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 rightPaddleSmall.Draw(canvas);
                 fakeGameBall.Draw(canvas);
                 if(rightArcLength <= 180){
-                    rightArcLength += 10;
+                    rightArcLength += 4;
                     rightPaddle.setArcLength(rightArcLength);
                 }
                 if(leftArcLength <= 180){
-                    leftArcLength -= 10;
+                    leftArcLength -= 4;
                     leftPaddle.setArcLength(leftArcLength);
                 }
 
                 if(rightArcLength >= 180){
                     if(rightArcSmall >= -15){
-                        rightArcSmall -= 5;
+                        rightArcSmall -= 2;
                         rightPaddleSmall.setArcLength(rightArcSmall);
                     }
                 }
 
                 if(-leftArcLength >= 180){
                     if(leftArcSmall <=15){
-                        leftArcSmall += 5;
+                        leftArcSmall += 2;
                         leftPaddleSmall.setArcLength(leftArcSmall);
                         if(ballRadius <= 22){
                             ballRadius += FAKE_BALL_GROWTH_RATE;
