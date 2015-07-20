@@ -57,6 +57,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int fakeGameBallRadius = 0;
     private int ballRadius = 0;
     private final int FAKE_BALL_GROWTH_RATE = 11;
+    private boolean finishedIntroDrawing;
 
     public GameSurfaceView(Context context) {
         super(context);

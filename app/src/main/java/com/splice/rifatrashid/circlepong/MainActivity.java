@@ -60,7 +60,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addScope(Games.SCOPE_GAMES)
                 .build();
-        if(mGoogleApiClient != null && mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
         }
@@ -71,7 +71,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 try {
                     Intent i = new Intent(MainActivity.this, gameStartup.class);
                     startActivity(i);
-                }catch (Exception e){
+                    overridePendingTransition(R.anim.animation, R.anim.animation2);
+                } catch (Exception e) {
                     //Error occured with starting single player game variant!
                     e.printStackTrace();
                 }
@@ -101,9 +102,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
-        if(mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
@@ -174,10 +175,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        if(mResolvingError){
+        if (mResolvingError) {
             return;
-        }else if(connectionResult.hasResolution()){
-            try{
+        } else if (connectionResult.hasResolution()) {
+            try {
                 mResolvingError = true;
                 connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_ERROR);
             } catch (IntentSender.SendIntentException e) {
@@ -185,28 +186,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 //If theres an error try to connect again
                 mGoogleApiClient.connect();
             }
-        }else{
+        } else {
             mResolvingError = true;
         }
-        /*
-        if(connectionResult.hasResolution()){
-            try{
-                connectionResult.startResolutionForResult(this, 1);
-                mGoogleApiClient.connect();
-            }catch (IntentSender.SendIntentException e){
-                e.printStackTrace();
-            }
-        }
-        */
         System.out.println(connectionResult);
     }
 
+    //Override default onActivityResult...
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == REQUEST_RESOLVE_ERROR){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_RESOLVE_ERROR) {
             mResolvingError = false;
-            if(resultCode == RESULT_OK){
-                if(!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()){
+            if (resultCode == RESULT_OK) {
+                if (!mGoogleApiClient.isConnecting() && !mGoogleApiClient.isConnected()) {
                     mGoogleApiClient.connect();
                 }
             }
@@ -284,7 +276,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 Paddle.Draw(canvas);
                 ball.Draw(canvas);
                 if (arc1Length <= 360) {
-                    arc1Length += 3;
+                    arc1Length += 7;
                     Paddle.setArcLength(arc1Length);
                 }
                 if (arc1Length >= 360) {
