@@ -49,6 +49,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private boolean mResolvingError = false;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
     private Button play_btn;
+    private boolean ballObjectDrawn = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -316,6 +317,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                         ballRadius += BALL_GROWTH_RATE;
                         ball.setRadius(ballRadius);
                     }
+                }
+                if(ball.getRadius() >= 22){
+                    //Last object to be drawn: stop the thread
+                    ballObjectDrawn = true;
                 }
                 canvas.restore();
             }
