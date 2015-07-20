@@ -45,12 +45,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private Paint ballPaint;
     private GoogleApiClient mGoogleApiClient;
     private Button achievments_button;
+    private Button leaderboard_btn;
     private boolean mResolvingError = false;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
     private Button play_btn;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -78,6 +79,22 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
+        leaderboard_btn = (Button) findViewById(R.id.leaderboard_btn);
+        leaderboard_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (mGoogleApiClient.isConnected()) {
+                        startActivityForResult(Games.Leaderboards.getAllLeaderboardsIntent(mGoogleApiClient), 1);
+                    } else if (!mGoogleApiClient.isConnected()) {
+                        //Error with connecting to leaderboards
+                        System.out.println("Could not start leaderboards Intent");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
@@ -90,7 +107,16 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             public void onClick(View v) {
                 //Start ahcievments activity!
                 //@Provided by google
-                startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
+                try {
+                    if (mGoogleApiClient.isConnected()) {
+                        startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
+                    } else if (!mGoogleApiClient.isConnected()) {
+                        System.out.println("Could not start achievements Intent");
+                    }
+                } catch (Exception e) {
+                    //Error with starting achievments activity!
+                    e.printStackTrace();
+                }
             }
         });
     }
