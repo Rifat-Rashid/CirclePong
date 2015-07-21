@@ -1,10 +1,13 @@
 package com.splice.rifatrashid.circlepong;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -35,10 +38,18 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
     private Ball fakeGameBall;
     private Paint fakeBallPaint;
     private int fakeGameBallRadius = 0;
-    private final Paint mainHeaderTextPaint = new Paint();
+    private final Paint scorePaint = new Paint();
     private int ballRadius = 0;
     private final int FAKE_BALL_GROWTH_RATE = 11;
     private int gameScore = 0;
+    private boolean finishedDrawing = false;
+    private paddle Paddle;
+    private Ball gameBall;
+    private int numberOfScreenTaps = 0;
+    private int countDown;
+    private boolean countDownFinished = false;
+    private int numberOfRuns = 0;
+    private Paint counterPaint = new Paint();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -90,6 +101,23 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        switch (e.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                numberOfScreenTaps++;
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(play_game.this, MainActivity.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.right_left, R.anim.left_right);
+    }
+
     class GameThread extends Thread {
         private int canvasWidth;
         private int canvasHeight;
@@ -105,10 +133,12 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 //Initialize stuff here!
                 rightPaddle = new paddle(35, 35, 785, 785, 270, 0);
                 leftPaddle = new paddle(35, 35, 785, 785, 270, 0);
-                leftPaddleSmall = new paddle(35, 35, 785,785, 90, 0);
-                rightPaddleSmall = new paddle(35, 35,785,785, 90, 0);
+                leftPaddleSmall = new paddle(35, 35, 785, 785, 90, 0);
+                rightPaddleSmall = new paddle(35, 35, 785, 785, 90, 0);
                 baseCirlce = new Circle(410, 410, 375);
                 fakeGameBall = new Ball(410, 410, fakeGameBallRadius);
+                Paddle = new paddle(35, 35, 785, 785, 75, 30);
+                gameBall = new Ball(410, 410, fakeGameBallRadius);
                 //---------------------------------------------------------------------------------
                 //right paddle paint
                 rightPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -132,6 +162,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 smallPaddlePaint.setStrokeWidth(12.0f);
                 leftPaddleSmall.setPaint(smallPaddlePaint);
                 rightPaddleSmall.setPaint(smallPaddlePaint);
+                Paddle.setPaint(smallPaddlePaint);
                 //Paint for base circle
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
@@ -144,9 +175,13 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 fakeBallPaint.setStyle(Paint.Style.FILL);
                 fakeBallPaint.setColor(Color.parseColor("#FFFFFF"));
                 fakeGameBall.setPaint(fakeBallPaint);
+                gameBall.setPaint(fakeBallPaint);
                 //paint for score text
-                mainHeaderTextPaint.setColor(Color.parseColor("#191819"));
-                mainHeaderTextPaint.setTextSize(260);
+                scorePaint.setColor(Color.parseColor("#191819"));
+                scorePaint.setTextSize(290);
+                //Counter paint
+                counterPaint.setColor(Color.parseColor("#191819"));
+                counterPaint.setTextSize(75);
                 //---------------------------------------------------------------------------------
             }
         }
@@ -184,49 +219,87 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 canvas.save();
                 canvas.drawColor(Color.parseColor("#191819"));
                 baseCirlce.Draw(canvas);
-                if(gameScore < 10){
+                if (gameScore < 10) {
                     String textString = "0" + gameScore;
-                    int textWidth = (int) mainHeaderTextPaint.measureText(textString);
-                    canvas.drawText("0" + gameScore, 410 - textWidth/2, 410 + textWidth/2, mainHeaderTextPaint);
-                }else if(gameScore >= 10){
+                    int textWidth = (int) scorePaint.measureText(textString);
+                    canvas.drawText("0" + gameScore, 410 - textWidth / 2, 410 + textWidth / 3, scorePaint);
+                } else if (gameScore >= 10) {
                     String textString = String.valueOf(gameScore);
-                    int textWidth = (int) mainHeaderTextPaint.measureText(textString);
-                    canvas.drawText(String.valueOf(gameScore), 410 - textWidth/2, 410 + textWidth/2, mainHeaderTextPaint);//
+                    int textWidth = (int) scorePaint.measureText(textString);
+                    canvas.drawText(String.valueOf(gameScore), 410 - textWidth / 2, 410 + textWidth / 3, scorePaint);
                 }
-                mainHeaderTextPaint.measureText("00");
-                rightPaddle.Draw(canvas);
-                leftPaddle.Draw(canvas);
-                leftPaddleSmall.Draw(canvas);
-                rightPaddleSmall.Draw(canvas);
-                fakeGameBall.Draw(canvas);
-                if(rightArcLength <= 180){
+                if (!finishedDrawing) {
+                    rightPaddle.Draw(canvas);
+                    leftPaddle.Draw(canvas);
+                    leftPaddleSmall.Draw(canvas);
+                    rightPaddleSmall.Draw(canvas);
+                    fakeGameBall.Draw(canvas);
+                } else if (finishedDrawing) {
+                    switch (numberOfRuns) {
+                        case 0:
+                            startTimer();
+                            numberOfRuns++;
+                            break;
+                        default:
+                            //do nothing!
+                            break;
+                    }
+                    if (!countDownFinished) {
+                        int textWidth = (int) counterPaint.measureText(String.valueOf(countDown));
+                        canvas.drawText(String.valueOf(countDown), 410 - textWidth / 2, 410 + 200, counterPaint);
+                    }
+                    rightPaddle.Draw(canvas);
+                    leftPaddle.Draw(canvas);
+                    gameBall.setRadius(ballRadius);
+                    gameBall.Draw(canvas);
+                    Paddle.Draw(canvas);
+                }
+                if (rightArcLength <= 180) {
                     rightArcLength += 4;
                     rightPaddle.setArcLength(rightArcLength);
                 }
-                if(leftArcLength <= 180){
+                if (leftArcLength <= 180) {
                     leftArcLength -= 4;
                     leftPaddle.setArcLength(leftArcLength);
                 }
 
-                if(rightArcLength >= 180){
-                    if(rightArcSmall >= -15){
+                if (rightArcLength >= 180) {
+                    if (rightArcSmall >= -15) {
                         rightArcSmall -= 2;
                         rightPaddleSmall.setArcLength(rightArcSmall);
                     }
                 }
 
-                if(-leftArcLength >= 180){
-                    if(leftArcSmall <=15){
+                if (-leftArcLength >= 180) {
+                    if (leftArcSmall <= 15) {
                         leftArcSmall += 2;
                         leftPaddleSmall.setArcLength(leftArcSmall);
-                        if(ballRadius <= 22){
+                        if (ballRadius <= 22) {
                             ballRadius += FAKE_BALL_GROWTH_RATE;
+                            fakeGameBall.setRadius(ballRadius);
+                        } else {
+                            finishedDrawing = true;
                         }
                     }
                 }
-                fakeGameBall.setRadius(ballRadius);
                 canvas.restore();
             }
+        }
+
+        private void startTimer() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new CountDownTimer(4100, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                            countDown = (int) millisUntilFinished / 1000;
+                        }
+                        public void onFinish() {
+                            countDownFinished = true;
+                        }
+                    }.start();
+                }
+            });
         }
     }
 }
