@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             @Override
             public void onClick(View v) {
                 try {
-                    Intent i = new Intent(MainActivity.this, gameStartup.class);
+                    Intent i = new Intent(MainActivity.this, play_game.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.animation, R.anim.animation2);
                 } catch (Exception e) {
