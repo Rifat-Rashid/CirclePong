@@ -191,7 +191,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 }else if(gameScore >= 10){
                     String textString = String.valueOf(gameScore);
                     int textWidth = (int) mainHeaderTextPaint.measureText(textString);
-                    canvas.drawText(String.valueOf(gameScore), 410 - textWidth/2, 410 + textWidth/2, mainHeaderTextPaint);
+                    canvas.drawText(String.valueOf(gameScore), 410 - textWidth/2, 410 + textWidth/2, mainHeaderTextPaint);//
                 }
                 mainHeaderTextPaint.measureText("00");
                 rightPaddle.Draw(canvas);
