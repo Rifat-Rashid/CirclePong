@@ -52,11 +52,13 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
     private Paint counterPaint = new Paint();
     private boolean startGame = false;
     private static int degree = 75;
-    private static final int paddleSpeed = 3;
-    private static final int BALL_SPEED  = 5;
+    private static final int paddleSpeed = 2;
+    private static final double BALL_SPEED = 3;
     private int hit = 0;
     private int deltaX, deltaY = 0;
-    private int shift = 1;
+    private double shift = 0;
+    private static final int centerOfCanvasX = 410;
+    private static final int centerOfCanvasY = 410;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -221,6 +223,38 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
             }
         }
 
+        //Any calculations in the game goes here...
+        //--------------------------------------------------------------------------------------------
+        private int getDistanceFromCenter() {
+            int ballX = deltaX;
+            int ballY = deltaY;
+            int deltaX = (int) Math.pow((ballX), 2);
+            int deltaY = (int) Math.pow((ballY), 2);
+            int deltaXY = (int) (deltaX + deltaY);
+            int distance = (int) Math.sqrt(deltaXY);
+            return distance;
+        }
+
+        //Angle variable for the ball!
+        int angle;
+
+        private int getBallAngle() {
+            int diffX = deltaX;
+            int diffY = deltaY;
+            try {
+                angle = (int) (Math.atan2(-diffY, diffX) * 180 / Math.PI);
+                if (angle < 0) {
+                    angle = 360 + angle;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return angle;
+        }
+        //--------------------------------------------------------------------------------------------
+
+        int ballAngle;
+
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
@@ -258,6 +292,16 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                     //when game starts do...
                     //----------------------------------------------------------------------------------------------
                     if (startGame) {
+                        int distanceFromCenter = getDistanceFromCenter();
+                        if (distanceFromCenter >= (375 - gameBall.getRadius()) && distanceFromCenter <= ((375 - gameBall.getRadius()) + 6)) {
+                            ballAngle = (360 - getBallAngle());
+                            if (ballAngle >= Paddle.getMinDegree() && ballAngle <= Paddle.getMaxDegree()) {
+                                hit++;
+                                gameScore++;
+                            } else {
+                                //Do nothing, ball missed paddle
+                            }
+                        }
                         switch (numberOfScreenTaps) {
                             case 0:
                                 break;
@@ -285,17 +329,16 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                                 shift = BALL_SPEED;
                                 break;
                         }
-
                         deltaX += shift;
                         deltaY += shift;
-
+                        gameBall.setX(centerOfCanvasX + deltaX);
+                        gameBall.setY(centerOfCanvasY + deltaY);
                         if (degree > 360) {
                             degree = degree - 360;
                         }
                         if (degree < 360) {
                             degree = 360 + degree;
                         }
-
                     } else if (!startGame) {
                         //Start game = false...
                     }
@@ -303,6 +346,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                     rightPaddle.Draw(canvas);
                     leftPaddle.Draw(canvas);
                     gameBall.setRadius(ballRadius);
+
                     gameBall.Draw(canvas);
                     Paddle.setDegree(degree);
                     Paddle.Draw(canvas);
@@ -337,6 +381,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                         }
                     }
                 }
+
                 canvas.restore();
             }
         }
