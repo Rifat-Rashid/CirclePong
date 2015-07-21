@@ -50,6 +50,13 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
     private boolean countDownFinished = false;
     private int numberOfRuns = 0;
     private Paint counterPaint = new Paint();
+    private boolean startGame = false;
+    private static int degree = 75;
+    private static final int paddleSpeed = 3;
+    private static final int BALL_SPEED  = 5;
+    private int hit = 0;
+    private int deltaX, deltaY = 0;
+    private int shift = 1;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -159,7 +166,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 smallPaddlePaint.setAntiAlias(true);
                 smallPaddlePaint.setColor(Color.parseColor("#FF2D55"));
                 smallPaddlePaint.setStyle(Paint.Style.STROKE);
-                smallPaddlePaint.setStrokeWidth(12.0f);
+                smallPaddlePaint.setStrokeWidth(14.0f);
                 leftPaddleSmall.setPaint(smallPaddlePaint);
                 rightPaddleSmall.setPaint(smallPaddlePaint);
                 Paddle.setPaint(smallPaddlePaint);
@@ -248,16 +255,64 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                         int textWidth = (int) counterPaint.measureText(String.valueOf(countDown));
                         canvas.drawText(String.valueOf(countDown), 410 - textWidth / 2, 410 + 200, counterPaint);
                     }
+                    //when game starts do...
+                    //----------------------------------------------------------------------------------------------
+                    if (startGame) {
+                        switch (numberOfScreenTaps) {
+                            case 0:
+                                break;
+                            case 1:
+                                degree -= paddleSpeed;
+                                break;
+                            case 2:
+                                degree += paddleSpeed;
+                                break;
+                            case 3:
+                                //Reset counter!
+                                numberOfScreenTaps = 1;
+                                degree += paddleSpeed;
+                                break;
+                        }
+                        switch (hit) {
+                            case 0:
+                                shift = BALL_SPEED;
+                                break;
+                            case 1:
+                                shift = -BALL_SPEED;
+                                break;
+                            case 2:
+                                hit = 0;
+                                shift = BALL_SPEED;
+                                break;
+                        }
+
+                        deltaX += shift;
+                        deltaY += shift;
+
+                        if (degree > 360) {
+                            degree = degree - 360;
+                        }
+                        if (degree < 360) {
+                            degree = 360 + degree;
+                        }
+
+                    } else if (!startGame) {
+                        //Start game = false...
+                    }
+                    //----------------------------------------------------------------------------------------------
                     rightPaddle.Draw(canvas);
                     leftPaddle.Draw(canvas);
                     gameBall.setRadius(ballRadius);
                     gameBall.Draw(canvas);
+                    Paddle.setDegree(degree);
                     Paddle.Draw(canvas);
                 }
+
                 if (rightArcLength <= 180) {
                     rightArcLength += 4;
                     rightPaddle.setArcLength(rightArcLength);
                 }
+
                 if (leftArcLength <= 180) {
                     leftArcLength -= 4;
                     leftPaddle.setArcLength(leftArcLength);
@@ -294,8 +349,11 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                         public void onTick(long millisUntilFinished) {
                             countDown = (int) millisUntilFinished / 1000;
                         }
+
                         public void onFinish() {
                             countDownFinished = true;
+                            startGame = true;
+                            numberOfScreenTaps++;
                         }
                     }.start();
                 }
