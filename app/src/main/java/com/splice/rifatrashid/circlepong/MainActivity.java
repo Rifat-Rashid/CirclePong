@@ -71,15 +71,19 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             @Override
             public void onClick(View v) {
                 try {
+                    /*
                     Intent i = new Intent(MainActivity.this, play_game.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.animation, R.anim.animation2);
+                    */
+                    startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
                 } catch (Exception e) {
                     //Error occured with starting single player game variant!
                     e.printStackTrace();
                 }
             }
         });
+        /*
         leaderboard_btn = (Button) findViewById(R.id.leaderboard_btn);
         leaderboard_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +100,14 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
+        */
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
+        /*
         achievments_button = (Button) findViewById(R.id.button);
         achievments_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +126,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
+        */
     }
 
     @Override
