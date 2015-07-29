@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private int baseCircleRadius = 0;
     private int ballRadius = 0;
     private Paint baseCirclePaint;
-    private final int BASECIRCLE_GROWTH_RATE = 11;
+    private final int BASECIRCLE_GROWTH_RATE = 13;
     private Ball ball;
     private final int BALL_GROWTH_RATE = 4;
     private Paint ballPaint;
