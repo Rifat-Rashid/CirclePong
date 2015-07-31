@@ -302,6 +302,9 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                                 //Do nothing, ball missed paddle
                             }
                         }
+                        if(distanceFromCenter >= 410){
+                            resetGame();
+                        }
                         switch (numberOfScreenTaps) {
                             case 0:
                                 break;
@@ -346,7 +349,6 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                     rightPaddle.Draw(canvas);
                     leftPaddle.Draw(canvas);
                     gameBall.setRadius(ballRadius);
-
                     gameBall.Draw(canvas);
                     Paddle.setDegree(degree);
                     Paddle.Draw(canvas);
@@ -384,6 +386,13 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
 
                 canvas.restore();
             }
+        }
+
+        private void resetGame(){
+            gameBall.setX(410);
+            gameBall.setY(410);
+            Paddle.setDegree(75);
+            shift = 0;
         }
 
         private void startTimer() {

@@ -52,7 +52,17 @@
         android:id="@+id/achievement_btn"
         android:layout_x="298dp"
         android:layout_y="532dp"
-        android:src="@drawable/restarted"
+        android:src="@drawable/food"
+        android:scaleType="fitCenter"
+        android:background="#00000000" />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/imageButton"
+        android:layout_x="246dp"
+        android:layout_y="533dp"
+        android:src="@drawable/knock"
         android:scaleType="fitCenter"
         android:background="#00000000" />
 
