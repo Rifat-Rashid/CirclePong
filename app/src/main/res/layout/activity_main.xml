@@ -7,7 +7,8 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:id="@+id/e">
 
     <TextView
         android:id="@+id/titleText"
@@ -46,23 +47,13 @@
         android:layout_y="176dp" />
 
     <ImageButton
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:id="@+id/imageButton"
-        android:layout_x="128dp"
-        android:layout_y="527dp"
-        android:src="@drawable/polo"
-        android:scaleType="fitXY"
-        android:background="#00000000" />
-
-    <ImageButton
-        android:layout_width="51dp"
-        android:layout_height="51dp"
-        android:id="@+id/imageButton2"
-        android:layout_x="181dp"
-        android:layout_y="528dp"
-        android:src="@drawable/polo"
-        android:scaleType="fitXY"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/achievement_btn"
+        android:layout_x="298dp"
+        android:layout_y="532dp"
+        android:src="@drawable/restarted"
+        android:scaleType="fitCenter"
         android:background="#00000000" />
 
 </AbsoluteLayout>

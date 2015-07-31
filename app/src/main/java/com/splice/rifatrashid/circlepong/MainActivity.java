@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -50,6 +51,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private static final int REQUEST_RESOLVE_ERROR = 1001;
     private Button play_btn;
     private boolean ballObjectDrawn = false;
+    private ImageButton achievementButton;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -104,9 +106,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
         titleText = (TextView) findViewById(R.id.titleText);
         titleText.setTypeface(lato);
-        /*
-        achievments_button = (Button) findViewById(R.id.button);
-        achievments_button.setOnClickListener(new View.OnClickListener() {
+
+        achievementButton = (ImageButton) findViewById(R.id.achievement_btn);
+        achievementButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Start ahcievments activity!
@@ -123,7 +125,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
-        */
+
     }
 
     @Override
