@@ -71,12 +71,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             @Override
             public void onClick(View v) {
                 try {
-                    /*
                     Intent i = new Intent(MainActivity.this, play_game.class);
                     startActivity(i);
                     overridePendingTransition(R.anim.animation, R.anim.animation2);
-                    */
-                    startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
                 } catch (Exception e) {
                     //Error occured with starting single player game variant!
                     e.printStackTrace();

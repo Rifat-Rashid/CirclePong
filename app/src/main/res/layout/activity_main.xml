@@ -35,14 +35,34 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF"
-        android:layout_x="89dp"
-        android:layout_y="473dp" />
+        android:layout_x="88dp"
+        android:layout_y="452dp" />
 
     <SurfaceView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/surfaceView"
-        android:layout_x="83dp"
-        android:layout_y="199dp" />
+        android:layout_x="82dp"
+        android:layout_y="176dp" />
+
+    <ImageButton
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:id="@+id/imageButton"
+        android:layout_x="128dp"
+        android:layout_y="527dp"
+        android:src="@drawable/polo"
+        android:scaleType="fitXY"
+        android:background="#00000000" />
+
+    <ImageButton
+        android:layout_width="51dp"
+        android:layout_height="51dp"
+        android:id="@+id/imageButton2"
+        android:layout_x="181dp"
+        android:layout_y="528dp"
+        android:src="@drawable/polo"
+        android:scaleType="fitXY"
+        android:background="#00000000" />
 
 </AbsoluteLayout>
