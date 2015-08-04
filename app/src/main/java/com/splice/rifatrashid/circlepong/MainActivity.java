@@ -46,12 +46,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private Paint ballPaint;
     private GoogleApiClient mGoogleApiClient;
     private Button achievments_button;
-    private Button leaderboard_btn;
     private boolean mResolvingError = false;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
     private Button play_btn;
     private boolean ballObjectDrawn = false;
-    private ImageButton achievementButton;
+    private ImageButton achievementButton, leaderboard_btn;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -82,8 +81,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
-        /*
-        leaderboard_btn = (Button) findViewById(R.id.leaderboard_btn);
+        leaderboard_btn = (ImageButton) findViewById(R.id.leaderboard_btn);
         leaderboard_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +97,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
-        */
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);

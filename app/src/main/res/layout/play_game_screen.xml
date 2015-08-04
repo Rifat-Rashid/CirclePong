@@ -24,4 +24,15 @@
         android:layout_marginTop="50dp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:id="@+id/reset_btn"
+        android:background="#00000000"
+        android:src="@drawable/reset"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/surfaceView"
+        android:layout_toStartOf="@+id/textView"
+        android:layout_marginTop="51dp" />
 </RelativeLayout>

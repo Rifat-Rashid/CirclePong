@@ -10,6 +10,8 @@ import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -59,6 +61,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
     private double shift = 0;
     private static final int centerOfCanvasX = 410;
     private static final int centerOfCanvasY = 410;
+    private ImageButton resetButton;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -67,6 +70,13 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
+        resetButton = (ImageButton) findViewById(R.id.reset_btn);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -390,9 +400,15 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
 
         private void resetGame(){
             gameBall.setX(410);
+            deltaX = 0;
+            deltaY = 0;
             gameBall.setY(410);
             Paddle.setDegree(75);
+            degree = 75;
             shift = 0;
+            countDownFinished = false;
+            startGame = false;
+            startTimer();
         }
 
         private void startTimer() {
