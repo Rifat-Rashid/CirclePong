@@ -1,4 +1,4 @@
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,51 +19,57 @@
         android:textSize="40dp"
         android:textColor="#FF2D55"
         android:layout_marginTop="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_x="84dp"
-        android:layout_y="49dp" />
+        android:layout_y="49dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Play"
-        android:width="185dp"
-        android:height="55dp"
-        android:id="@+id/playButton"
-        android:background="@drawable/custom_button"
-        android:layout_marginBottom="111dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_x="88dp"
-        android:layout_y="452dp" />
 
     <SurfaceView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/surfaceView"
         android:layout_x="82dp"
-        android:layout_y="176dp" />
+        android:layout_y="176dp"
+        android:layout_below="@+id/titleText"
+        android:layout_alignEnd="@+id/titleText"
+        android:layout_marginTop="84dp" />
 
     <ImageButton
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/achievement_btn"
-        android:layout_x="298dp"
-        android:layout_y="532dp"
+        android:layout_x="237dp"
+        android:layout_y="471dp"
         android:src="@drawable/food"
         android:scaleType="fitCenter"
-        android:background="#00000000" />
+        android:background="#00000000"
+        android:layout_alignTop="@+id/playButton"
+        android:layout_toEndOf="@+id/surfaceView" />
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/playButton"
+        android:layout_x="153dp"
+        android:layout_y="470dp"
+        android:src="@drawable/playbutton"
+        android:scaleType="fitCenter"
+        android:background="#00000000"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="69dp" />
 
     <ImageButton
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/leaderboard_btn"
-        android:layout_x="246dp"
-        android:layout_y="533dp"
+        android:layout_x="57dp"
+        android:layout_y="472dp"
         android:src="@drawable/knock"
         android:scaleType="fitCenter"
-        android:background="#00000000" />
+        android:background="#00000000"
+        android:layout_alignTop="@+id/playButton"
+        android:layout_toStartOf="@+id/surfaceView" />
 
-</AbsoluteLayout>
+</RelativeLayout>

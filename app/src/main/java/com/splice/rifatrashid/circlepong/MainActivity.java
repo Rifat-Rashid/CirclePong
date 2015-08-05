@@ -67,6 +67,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
         }
+        /*
         play_btn = (Button) findViewById(R.id.playButton);
         play_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +82,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
+        */
         leaderboard_btn = (ImageButton) findViewById(R.id.leaderboard_btn);
         leaderboard_btn.setOnClickListener(new View.OnClickListener() {
             @Override
