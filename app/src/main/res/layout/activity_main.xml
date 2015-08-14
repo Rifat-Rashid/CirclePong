@@ -7,6 +7,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity"
     android:id="@+id/e">
 
@@ -101,5 +102,15 @@
         android:layout_below="@+id/titleText2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="3dp" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        android:layout_alignStart="@+id/leaderboard_btn">
+    </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>
