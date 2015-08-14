@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191819"
+    android:background="#ff0049"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
@@ -14,11 +14,11 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Circle Pong"
+        android:text="Circle"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40dp"
-        android:textColor="#FF2D55"
-        android:layout_marginTop="40dp"
+        android:textColor="#d3d3d3"
+        android:layout_marginTop="27dp"
         android:layout_x="84dp"
         android:layout_y="49dp"
         android:layout_alignParentTop="true"
@@ -31,9 +31,8 @@
         android:id="@+id/surfaceView"
         android:layout_x="82dp"
         android:layout_y="176dp"
-        android:layout_below="@+id/titleText"
-        android:layout_alignEnd="@+id/titleText"
-        android:layout_marginTop="84dp" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="60dp"
@@ -45,7 +44,8 @@
         android:scaleType="fitCenter"
         android:background="#00000000"
         android:layout_alignTop="@+id/playButton"
-        android:layout_toEndOf="@+id/surfaceView" />
+        android:layout_toEndOf="@+id/surfaceView"
+        android:visibility="invisible" />
 
     <ImageButton
         android:layout_width="60dp"
@@ -58,7 +58,8 @@
         android:background="#00000000"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="69dp" />
+        android:layout_marginBottom="69dp"
+        android:visibility="invisible" />
 
     <ImageButton
         android:layout_width="60dp"
@@ -70,6 +71,35 @@
         android:scaleType="fitCenter"
         android:background="#00000000"
         android:layout_alignTop="@+id/playButton"
-        android:layout_toStartOf="@+id/surfaceView" />
+        android:layout_toStartOf="@+id/surfaceView"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/titleText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pong"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="40dp"
+        android:textColor="#d3d3d3"
+        android:layout_x="84dp"
+        android:layout_y="49dp"
+        android:layout_below="@+id/titleText"
+        android:layout_centerHorizontal="true" />
+
+    <View
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:background="#d3d3d3"
+        android:layout_alignTop="@+id/titleText"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/view" />
+    <View
+        android:layout_width="150dp"
+        android:layout_height="1dp"
+        android:background="#d3d3d3"
+        android:layout_below="@+id/titleText2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp" />
 
 </RelativeLayout>

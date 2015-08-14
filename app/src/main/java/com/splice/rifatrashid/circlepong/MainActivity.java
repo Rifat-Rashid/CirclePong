@@ -27,7 +27,7 @@ import java.util.logging.LogRecord;
 
 public class MainActivity extends Activity implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private TextView titleText;
+    private TextView titleText, titleText2;
     private Handler handlerApplication;
     private SurfaceHolder _surfaceHolder;
     private GameThread thread;
@@ -103,8 +103,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
         Typeface lato = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
+        Typeface lato2 = Typeface.createFromAsset(getAssets(), "fonts/Lato-Thin.ttf");
+        titleText2 = (TextView) findViewById(R.id.titleText2);
+        titleText2.setTypeface(lato);
         titleText = (TextView) findViewById(R.id.titleText);
-        titleText.setTypeface(lato);
+        titleText.setTypeface(lato2);
 
         achievementButton = (ImageButton) findViewById(R.id.achievement_btn);
         achievementButton.setOnClickListener(new View.OnClickListener() {
@@ -256,16 +259,16 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(8);
-                paint.setColor(Color.parseColor("#FF2D55"));
+                paint.setStrokeWidth(3);
+                paint.setColor(Color.parseColor("#2a2a2a"));
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
-                baseCirclePaint.setColor(Color.parseColor("#2a2a2a"));
+                baseCirclePaint.setColor(Color.parseColor("#d3d3d3"));
                 ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 ballPaint.setAntiAlias(true);
                 ballPaint.setStyle(Paint.Style.FILL);
-                ballPaint.setColor(Color.parseColor("#FFFFFF"));
+                ballPaint.setColor(Color.parseColor("#2a2a2a"));
                 Paddle.setPaint(paint);
                 baseCircle.setPaint(baseCirclePaint);
                 ball.setPaint(ballPaint);
@@ -303,7 +306,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
-                canvas.drawColor(Color.parseColor("#191919"));
+                canvas.drawColor(Color.parseColor("#ff0049"));
                 baseCircle.Draw(canvas);
                 Paddle.Draw(canvas);
                 ball.Draw(canvas);
