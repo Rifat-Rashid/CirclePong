@@ -162,21 +162,21 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 //right paddle paint
                 rightPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 rightPaddlePaint.setAntiAlias(true);
-                rightPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                rightPaddlePaint.setColor(Color.parseColor("#191819"));
                 rightPaddlePaint.setStyle(Paint.Style.STROKE);
                 rightPaddlePaint.setStrokeWidth(3.5f);
                 rightPaddle.setPaint(rightPaddlePaint);
                 //Paddle2
                 leftPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 leftPaddlePaint.setAntiAlias(true);
-                leftPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                leftPaddlePaint.setColor(Color.parseColor("#191819"));
                 leftPaddlePaint.setStyle(Paint.Style.STROKE);
                 leftPaddlePaint.setStrokeWidth(3.5f);
                 leftPaddle.setPaint(leftPaddlePaint);
                 //Paint for small paddles
                 smallPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 smallPaddlePaint.setAntiAlias(true);
-                smallPaddlePaint.setColor(Color.parseColor("#FF2D55"));
+                smallPaddlePaint.setColor(Color.parseColor("#191819"));
                 smallPaddlePaint.setStyle(Paint.Style.STROKE);
                 smallPaddlePaint.setStrokeWidth(14.0f);
                 leftPaddleSmall.setPaint(smallPaddlePaint);
@@ -186,20 +186,20 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
-                baseCirclePaint.setColor(Color.parseColor("#2a2a2a"));
+                baseCirclePaint.setColor(Color.parseColor("#d2d2d2"));
                 baseCirlce.setPaint(baseCirclePaint);
                 //fake game ball paint
                 fakeBallPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 fakeBallPaint.setAntiAlias(true);
                 fakeBallPaint.setStyle(Paint.Style.FILL);
-                fakeBallPaint.setColor(Color.parseColor("#FFFFFF"));
+                fakeBallPaint.setColor(Color.parseColor("#2a2a2a"));
                 fakeGameBall.setPaint(fakeBallPaint);
                 gameBall.setPaint(fakeBallPaint);
                 //paint for score text
-                scorePaint.setColor(Color.parseColor("#191819"));
+                scorePaint.setColor(Color.parseColor("#b2b2b2"));
                 scorePaint.setTextSize(290);
                 //Counter paint
-                counterPaint.setColor(Color.parseColor("#191819"));
+                counterPaint.setColor(Color.parseColor("#b2b2b2"));
                 counterPaint.setTextSize(75);
                 //---------------------------------------------------------------------------------
             }
@@ -268,7 +268,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
-                canvas.drawColor(Color.parseColor("#191819"));
+                canvas.drawColor(Color.parseColor("#ff0049"));
                 baseCirlce.Draw(canvas);
                 if (gameScore < 10) {
                     String textString = "0" + gameScore;

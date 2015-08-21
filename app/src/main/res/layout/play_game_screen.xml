@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#191819">
+    android:background="#ff0049">
 
     <TextView
         android:id="@+id/textView"
@@ -10,7 +10,7 @@
         android:text="Circle Pong"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="40dp"
-        android:textColor="#FF2D55"
+        android:textColor="#d2d2d2"
         android:layout_marginTop="41dp"
         android:layout_x="79dp"
         android:layout_y="57dp"

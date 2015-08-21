@@ -49,8 +49,8 @@
         android:visibility="visible" />
 
     <ImageButton
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/playButton"
         android:layout_x="153dp"
         android:layout_y="470dp"
@@ -58,13 +58,13 @@
         android:scaleType="fitCenter"
         android:background="#00000000"
         android:visibility="visible"
-        android:layout_below="@+id/surfaceView"
+        android:layout_above="@+id/adView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
+        android:layout_marginBottom="46dp" />
 
     <ImageButton
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/leaderboard_btn"
         android:layout_x="57dp"
         android:layout_y="472dp"

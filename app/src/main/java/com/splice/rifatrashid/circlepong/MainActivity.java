@@ -12,7 +12,6 @@ import android.os.CountDownTimer;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -47,12 +46,11 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private final int BALL_GROWTH_RATE = 4;
     private Paint ballPaint;
     private GoogleApiClient mGoogleApiClient;
-    private Button achievments_button;
     private boolean mResolvingError = false;
     private static final int REQUEST_RESOLVE_ERROR = 1001;
-    private Button play_btn;
     private boolean ballObjectDrawn = false;
-    private ImageButton achievementButton, leaderboard_btn;
+    private ImageButton achievementButton, leaderboard_btn, play_btn;
+    private paddle padLeft, padRight;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -74,8 +72,8 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        /*
-        play_btn = (Button) findViewById(R.id.playButton);
+
+        play_btn = (ImageButton) findViewById(R.id.playButton);
         play_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +87,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         });
-        */
+
         leaderboard_btn = (ImageButton) findViewById(R.id.leaderboard_btn);
         leaderboard_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,11 +261,16 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 Paddle = new paddle(15, 15, 585, 585, DEGREE_ARC_1, arc1Length);
                 baseCircle = new Circle(300, 300, baseCircleRadius);
                 ball = new Ball(300, 300, ballRadius);
+                padRight = new paddle(15, 15, 585, 585, 90, 20);
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(3);
                 paint.setColor(Color.parseColor("#2a2a2a"));
+                Paint paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint1.setStrokeWidth(20);
+                paint1.setColor(Color.parseColor("#2a2a2a"));
+                padRight.setPaint(paint1);
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
@@ -336,6 +339,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 if(ball.getRadius() >= 22){
                     //Last object to be drawn: stop the thread
                     ballObjectDrawn = true;
+                    padRight.Draw(canvas);
                 }
                 canvas.restore();
             }
