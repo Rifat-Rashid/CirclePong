@@ -383,7 +383,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 if (baseCircleRadius >= 255) {
                     if (ballRadius <= 22) {
                         ballRadius += BALL_GROWTH_RATE;
-                        ball.setRadius(ballRadius);
+                         ball.setRadius(ballRadius);
                     }
                 }
                 if(ball.getRadius() >= 22){
