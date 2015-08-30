@@ -1,6 +1,7 @@
 package com.splice.rifatrashid.circlepong;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Canvas;
@@ -9,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PowerManager;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.plus.Plus;
 
+import java.util.Random;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -51,11 +54,22 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private boolean ballObjectDrawn = false;
     private ImageButton achievementButton, leaderboard_btn, play_btn;
     private paddle padLeft, padRight;
+    private int deltaX, deltaY = 0;
+    private boolean getBallXY = false;
+    protected PowerManager.WakeLock wakeLock;
+    private int dX, dY = 1;
+    private int hits = 0;
+    private Random random = new Random();
+    private int max = 3;
+    private int min = 1;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        this.wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Lock");
+        this.wakeLock.acquire();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -136,6 +150,24 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     }
 
     @Override
+    public void onDestroy(){
+        super.onDestroy();
+        this.wakeLock.release();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        this.wakeLock.acquire();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        this.wakeLock.release();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -172,7 +204,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             @Override
             public void onTick(long millisUntilFinished) {
                 //Do Nothing!
-                _surfaceView.setBackgroundColor(Color.parseColor("#191919"));
+                _surfaceView.setBackgroundColor(Color.parseColor("#e74c3c"));
             }
 
             @Override
@@ -282,7 +314,25 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 Paddle.setPaint(paint);
                 baseCircle.setPaint(baseCirclePaint);
                 ball.setPaint(ballPaint);
+                //Set deltaX and deltaY
+                deltaX = ball.getX();
+                deltaY = ball.getY();
             }
+        }
+
+        private int getDistanceFromCenter() {
+            int centerX = baseCircle.getX();
+            int centerY = baseCircle.getY();
+            int ballX = deltaX;
+            int ballY = deltaY;
+            int deltaX = (int) Math.abs(centerX - ballX);
+            int deltaY = (int) Math.abs(centerY - ballY);
+            int deltaXs = (int) Math.pow(deltaX, 2);
+            int deltaYs = (int) Math.pow(deltaY, 2);
+            int deltaXY = (int) (deltaXs + deltaYs);
+            int distance = (int) Math.sqrt(deltaXY);
+            System.out.println(distance);
+            return distance;
         }
 
         public void run() {
@@ -316,7 +366,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
-                canvas.drawColor(Color.parseColor("#ff0049"));
+                canvas.drawColor(Color.parseColor("#e74c3c"));
                 baseCircle.Draw(canvas);
                 Paddle.Draw(canvas);
                 ball.Draw(canvas);
@@ -339,7 +389,33 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 if(ball.getRadius() >= 22){
                     //Last object to be drawn: stop the thread
                     ballObjectDrawn = true;
-                    padRight.Draw(canvas);
+                }
+                if(ballObjectDrawn){
+                    //Allow ball to move
+                    if(getDistanceFromCenter() >= 300 - (ball.getRadius()/2 + ball.getRadius())) {
+                        hits++;
+                    }
+                    switch (hits){
+                        case 0:
+                            dX = random.nextInt(max - min + 1) + min;
+                            dY = random.nextInt(max - min + 1) + min;
+                            break;
+                        case 1:
+                            int random2 = random.nextInt(max - min + 1) + min;
+                            dX = -random2;
+                            dY = -random2;
+                            break;
+                        case 2:
+                            int random3 = random.nextInt(max - min + 1) + min;
+                            hits = 0;
+                            dX = random3;
+                            dY = random3;
+                            break;
+                    }
+                    deltaX = ball.getX() + dX;
+                    deltaY = ball.getY() + dY;
+                    ball.setX(deltaX);
+                    ball.setY(deltaY);
                 }
                 canvas.restore();
             }
