@@ -127,6 +127,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 numberOfScreenTaps++;
                 break;
         }
+
         return false;
     }
 
