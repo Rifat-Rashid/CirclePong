@@ -4,5 +4,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="banner_ad_unit_id">ca-app-pub-6943102378320284/7501537654</string>
-
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="backgroundColor">#536e79</color>
+    <color name="frontColor">#607d8d</color>
+    <string name="playgameDesc">Pong now on a entirely new playing field!</string>
+    <string name="googleplayDesc">Connect to Google Play to unlock exclusive features!</string>
+    <string name="achievementsDesc">Unlock achievements to earn Google Play points!</string>
+    <string name="leaderboardsDesc">Compete with a redesigned leaderboard system!</string>
 </resources>

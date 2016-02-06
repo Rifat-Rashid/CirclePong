@@ -17,8 +17,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
@@ -62,6 +60,10 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     private Random random = new Random();
     private int max = 3;
     private int min = 1;
+    private int angle1 = 30;
+    private int angle2 = 150;
+    private int angle3 = 270;
+    private Paint linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Lock");
         this.wakeLock.acquire();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -77,14 +80,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 .addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN)
                 .addScope(Games.SCOPE_GAMES)
                 .build();
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-        }
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+
+
+
+      //  AdView mAdView = (AdView) findViewById(R.id.adView);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        //mAdView.loadAd(adRequest);
 
 
         play_btn = (ImageButton) findViewById(R.id.playButton);
@@ -134,6 +136,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             public void onClick(View v) {
                 //Start ahcievments activity!
                 //@Provided by google
+
                 try {
                     if (mGoogleApiClient.isConnected()) {
                         startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
@@ -144,7 +147,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                     //Error with starting achievments activity!
                     e.printStackTrace();
                 }
+
             }
+
         });
 
     }
@@ -176,9 +181,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
     @Override
     protected void onStop() {
         super.onStop();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
     }
 
     @Override
@@ -247,6 +249,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+
         if (mResolvingError) {
             return;
         } else if (connectionResult.hasResolution()) {
@@ -262,11 +265,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
             mResolvingError = true;
         }
         System.out.println(connectionResult);
+
     }
 
     //Override default onActivityResult...
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == REQUEST_RESOLVE_ERROR) {
             mResolvingError = false;
             if (resultCode == RESULT_OK) {
@@ -275,6 +280,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 }
             }
         }
+
     }
 
     class GameThread extends Thread {
@@ -298,22 +304,27 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setStrokeWidth(3);
-                paint.setColor(Color.parseColor("#2a2a2a"));
+                paint.setColor(Color.parseColor("#FFFFFF"));
                 Paint paint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint1.setStrokeWidth(20);
-                paint1.setColor(Color.parseColor("#2a2a2a"));
+                paint1.setColor(Color.parseColor("#FFFFFF"));
                 padRight.setPaint(paint1);
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
-                baseCirclePaint.setColor(Color.parseColor("#d3d3d3"));
+                baseCirclePaint.setColor(Color.parseColor("#FFFFFF"));
+                //#2a22a
                 ballPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 ballPaint.setAntiAlias(true);
                 ballPaint.setStyle(Paint.Style.FILL);
-                ballPaint.setColor(Color.parseColor("#2a2a2a"));
+                ballPaint.setColor(Color.parseColor("#1abc9c"));
                 Paddle.setPaint(paint);
                 baseCircle.setPaint(baseCirclePaint);
                 ball.setPaint(ballPaint);
+                linePaint.setAntiAlias(true);
+                linePaint.setStyle(Paint.Style.FILL);
+                linePaint.setColor(Color.parseColor("#2a2a2a"));
+                linePaint.setStrokeWidth(3.5f);
                 //Set deltaX and deltaY
                 deltaX = ball.getX();
                 deltaY = ball.getY();
@@ -349,6 +360,16 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                     }
                 }
             }
+        }
+
+        private int getXonCircle(float radius, float angle, int x1){
+            int x = (int)(radius * Math.cos(angle * Math.PI / 180F)) + x1;
+            return x;
+        }
+
+        private int getYonCircle(float radius, float angle, int y1){
+            int y = (int)(radius * Math.sin(angle * Math.PI / 180F)) + y1;
+            return y;
         }
 
         public void setRunning(boolean b) {
@@ -391,7 +412,18 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                     ballObjectDrawn = true;
                 }
                 if(ballObjectDrawn){
+                    //radius = baseCircleRadius.getRadius
+                    /*
+                    canvas.drawLine(ball.getX(), ball.getY(), getXonCircle(285, angle1, ball.getX()), getYonCircle(285, angle1, ball.getY()), linePaint);
+                    canvas.drawLine(ball.getX(), ball.getY(), getXonCircle(285, angle2, ball.getX()), getYonCircle(285, angle2, ball.getY()), linePaint);
+                    canvas.drawLine(ball.getX(), ball.getY(), getXonCircle(285, angle3, ball.getX()), getYonCircle(285, angle3, ball.getY()), linePaint);
+
+                    angle1 += 1;
+                    angle2 += 1;
+                    angle3 += 1;
+*/
                     //Allow ball to move
+                    /*
                     if(getDistanceFromCenter() >= 300 - (ball.getRadius()/2 + ball.getRadius())) {
                         hits++;
                     }
@@ -416,6 +448,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Go
                     deltaY = ball.getY() + dY;
                     ball.setX(deltaX);
                     ball.setY(deltaY);
+                    */
                 }
                 canvas.restore();
             }

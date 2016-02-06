@@ -5,14 +5,19 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -54,29 +59,34 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
     private Paint counterPaint = new Paint();
     private boolean startGame = false;
     private static int degree = 75;
-    private static final int paddleSpeed = 2;
+    private static final int paddleSpeed = 3;
     private static final double BALL_SPEED = 3;
     private int hit = 0;
     private int deltaX, deltaY = 0;
-    private double shift = 0;
+    private double shiftX = 3;
+    private double shiftY = 3;
     private static final int centerOfCanvasX = 410;
     private static final int centerOfCanvasY = 410;
-    private ImageButton resetButton;
+    Random r = new Random();
+    public static int FRAMES_PER_SECOND = 61;
+    public static double SKIP_TICKS = (1000 / FRAMES_PER_SECOND);
+    public static double slope = 1;
+    public static double b = 3;
+    public static int chosen_sector = 4;
+    public static int hits = 0;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED, WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED
+        );
         setContentView(R.layout.play_game_screen);
         _surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         _surfaceHolder = _surfaceView.getHolder();
         _surfaceHolder.addCallback(this);
-        resetButton = (ImageButton) findViewById(R.id.reset_btn);
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
     }
 
     @Override
@@ -99,6 +109,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         });
         thread.setRunning(true);
         thread.start();
+
     }
 
     @Override
@@ -127,7 +138,6 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 numberOfScreenTaps++;
                 break;
         }
-
         return false;
     }
 
@@ -142,6 +152,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         private int canvasWidth;
         private int canvasHeight;
         private boolean run = false;
+        double MAX_FRAMESKIP = 5;
 
         public GameThread(SurfaceHolder surfaceHolder, Handler handler) {
             _surfaceHolder = surfaceHolder;
@@ -149,16 +160,17 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         }
 
         public void doStart() {
+
             synchronized (_surfaceHolder) {
                 //Initialize stuff here!
                 rightPaddle = new paddle(35, 35, 785, 785, 270, 0);
                 leftPaddle = new paddle(35, 35, 785, 785, 270, 0);
-                leftPaddleSmall = new paddle(35, 35, 785, 785, 90, 0);
-                rightPaddleSmall = new paddle(35, 35, 785, 785, 90, 0);
+                leftPaddleSmall = new paddle(35, 35, 785 + 7, 785 + 7, 90, 0);
+                rightPaddleSmall = new paddle(35, 35, 785 + 7, 785 + 7, 90, 0);
                 baseCirlce = new Circle(410, 410, 375);
                 fakeGameBall = new Ball(410, 410, fakeGameBallRadius);
-                Paddle = new paddle(35, 35, 785, 785, 75, 30);
-                gameBall = new Ball(410, 410, fakeGameBallRadius);
+                Paddle = new paddle(35, 35, 785 + 7, 785 + 7, 75, 30);
+                gameBall = new Ball(baseCirlce.getX(), baseCirlce.getY(), fakeGameBallRadius);
                 //---------------------------------------------------------------------------------
                 //right paddle paint
                 rightPaddlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -187,7 +199,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 baseCirclePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 baseCirclePaint.setAntiAlias(true);
                 baseCirclePaint.setStyle(Paint.Style.FILL);
-                baseCirclePaint.setColor(Color.parseColor("#d2d2d2"));
+                baseCirclePaint.setColor(Color.parseColor("#FFFFFF"));
                 baseCirlce.setPaint(baseCirclePaint);
                 //fake game ball paint
                 fakeBallPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -206,17 +218,62 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
             }
         }
 
+        /*
         public void run() {
+            //begin of loop!
+            long beginTime;
+            long timeDiff;
+            long sleepTime;
+            long framesSkipped;
+            sleepTime = 0;
             while (run) {
                 Canvas c = null;
+                beginTime = System.currentTimeMillis();
                 try {
                     c = _surfaceHolder.lockCanvas(null);
                     synchronized (_surfaceHolder) {
+                        framesSkipped = 0;
                         doDraw(c);
                     }
                 } finally {
                     if (c != null) {
                         _surfaceHolder.unlockCanvasAndPost(c);
+                    }
+                    timeDiff = System.currentTimeMillis() - beginTime;
+                    sleepTime = (long) (SKIP_TICKS - timeDiff);
+                    if (sleepTime > 0) {
+                        try {
+                            Thread.sleep(sleepTime);
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+            }
+        }
+
+        */
+
+
+        public void run(){
+            double next_game_tick = System.currentTimeMillis();
+            int loops;
+            while(run){
+                loops = 0;
+                while(System.currentTimeMillis() > next_game_tick && loops < MAX_FRAMESKIP){
+                    Canvas c = null;
+                    try{
+                        c = _surfaceHolder.lockCanvas(null);
+                        synchronized (_surfaceHolder){
+                            doDraw(c);
+                            next_game_tick += SKIP_TICKS;
+                            loops++;
+                        }
+                    }finally {
+                        if( c != null){
+                            _surfaceHolder.unlockCanvasAndPost(c);
+                        }
                     }
                 }
             }
@@ -231,6 +288,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 canvasHeight = height;
                 canvasWidth = width;
                 doStart();
+
             }
         }
 
@@ -261,6 +319,18 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                 e.printStackTrace();
             }
             return angle;
+
+        }
+
+        //given 2 points create a line
+        private void formulateNewLine(Point p1, Point p2) {
+            //y = mx + b
+            slope = (p1.y - p2.y) / (p1.x - p2.x);
+            b = p1.y - (slope * p1.x);
+        }
+
+        private int newBallY(int x) {
+            return (int) (slope * x + b);
         }
         //--------------------------------------------------------------------------------------------
 
@@ -269,7 +339,7 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
         private void doDraw(final Canvas canvas) {
             if (run) {
                 canvas.save();
-                canvas.drawColor(Color.parseColor("#ff0049"));
+                canvas.drawColor(Color.parseColor("#e74c3c"));
                 baseCirlce.Draw(canvas);
                 if (gameScore < 10) {
                     String textString = "0" + gameScore;
@@ -300,53 +370,79 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
                         int textWidth = (int) counterPaint.measureText(String.valueOf(countDown));
                         canvas.drawText(String.valueOf(countDown), 410 - textWidth / 2, 410 + 200, counterPaint);
                     }
+
                     //when game starts do...
                     //----------------------------------------------------------------------------------------------
+                    int iX = 0;
+                    int iY = 0;
+                    int r1 = 0;
+                    int r2 = 0;
                     if (startGame) {
+                        //the 3.5 is the stroke width
                         int distanceFromCenter = getDistanceFromCenter();
-                        if (distanceFromCenter >= (375 - gameBall.getRadius()) && distanceFromCenter <= ((375 - gameBall.getRadius()) + 6)) {
+
+                        if ((distanceFromCenter >= (baseCirlce.getRadius() - gameBall.getRadius()))) {
                             ballAngle = (360 - getBallAngle());
-                            if (ballAngle >= Paddle.getMinDegree() && ballAngle <= Paddle.getMaxDegree()) {
+                            if (ballAngle >= Paddle.getMinDegree()  && ballAngle <= Paddle.getMaxDegree()) {
+                                iX = deltaX;
+                                iY = deltaY;
+                                r1 = r.nextInt(5) - 2;
+                                r2 = r.nextInt(5) - 2;
+
                                 hit++;
                                 gameScore++;
                             } else {
                                 //Do nothing, ball missed paddle
                             }
+
                         }
-                        if(distanceFromCenter >= 410){
-                            resetGame();
+
+                        if(startGame) {
+                            switch (numberOfScreenTaps) {
+                                case 0:
+                                    break;
+                                case 1:
+                                    degree -= paddleSpeed;
+                                    break;
+                                case 2:
+                                    degree += paddleSpeed;
+                                    break;
+                                case 3:
+                                    //Reset counter!
+                                    numberOfScreenTaps = 1;
+                                    degree += paddleSpeed;
+                                    break;
+                            }
                         }
-                        switch (numberOfScreenTaps) {
-                            case 0:
-                                break;
-                            case 1:
-                                degree -= paddleSpeed;
-                                break;
-                            case 2:
-                                degree += paddleSpeed;
-                                break;
-                            case 3:
-                                //Reset counter!
-                                numberOfScreenTaps = 1;
-                                degree += paddleSpeed;
-                                break;
+                        //System.out.println(gameBall.getX() + ", " + gameBall.getY());
+                        //old detection system
+
+                        if(iX > 0 && iY > 0) {
+                            shiftX = -4+r1;
+                            shiftY = -4+r2;
                         }
-                        switch (hit) {
-                            case 0:
-                                shift = BALL_SPEED;
-                                break;
-                            case 1:
-                                shift = -BALL_SPEED;
-                                break;
-                            case 2:
-                                hit = 0;
-                                shift = BALL_SPEED;
-                                break;
+                        if(iX < 0 && iY > 0) {
+                            shiftX = 4+r1;
+                            shiftY = -4+r2;
                         }
-                        deltaX += shift;
-                        deltaY += shift;
+                        if(iX < 0 && iY < 0) {
+                            shiftX = 4+r1;
+                            shiftY = 4+r2;
+                        }
+                        if(iX > 0 && iY < 0) {
+                            shiftX = -4+r1;
+                            shiftY = 4+r2;
+                        }
+                        deltaX += shiftX;
+                        deltaY += shiftY;
                         gameBall.setX(centerOfCanvasX + deltaX);
                         gameBall.setY(centerOfCanvasY + deltaY);
+                        System.out.println(gameBall.getX() + "," + gameBall.getY());
+                        //System.out.println("Ball Y: " + newBallY(gameBall.getX()));
+                        Log.d("", "Ball Y: " + newBallY(gameBall.getX()));
+                        if (distanceFromCenter >= 375 + gameBall.getRadius()) {
+                            resetGame();
+                        }
                         if (degree > 360) {
                             degree = degree - 360;
                         }
@@ -399,16 +495,21 @@ public class play_game extends Activity implements SurfaceHolder.Callback {
             }
         }
 
-        private void resetGame(){
-            gameBall.setX(410);
+        private void resetGame() {
+            gameBall.setX(baseCirlce.getX());
             deltaX = 0;
             deltaY = 0;
-            gameBall.setY(410);
+            b = 3;
+            gameBall.setY(baseCirlce.getY());
             Paddle.setDegree(75);
+            slope = 1;
             degree = 75;
-            shift = 0;
+            shiftX = 3;
+            shiftY = 3;
+            hits = 0;
             countDownFinished = false;
             startGame = false;
+            gameScore = 0;
             startTimer();
         }
 

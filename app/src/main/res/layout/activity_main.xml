@@ -2,15 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:background="#e74c3c"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity"
     android:id="@+id/e">
-
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -58,9 +57,9 @@
         android:scaleType="fitCenter"
         android:background="#00000000"
         android:visibility="visible"
-        android:layout_above="@+id/adView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="46dp" />
+        android:layout_marginBottom="51dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -103,14 +102,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="3dp" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"
-        android:layout_alignStart="@+id/leaderboard_btn">
-    </com.google.android.gms.ads.AdView>
+
+
 
 </RelativeLayout>
+
